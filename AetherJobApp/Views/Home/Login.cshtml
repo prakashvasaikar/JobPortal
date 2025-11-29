@@ -1,0 +1,36 @@
+﻿@{
+	Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/AetherJobApp.styles.css" asp-append-version="true" />
+<!-- AngularJS CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+
+<script src="~/angularjs/app/app.js"></script>
+<script src="~/angularjs/factory/usermasterfactory.js"></script>
+<script src="~/angularjs/controller/usermastercontroller.js"></script>
+<p></p>
+
+<div class="container" ng-app="AetherJobApp" ng-controller="User as vm" ng-init="vm.init()">
+	<div class="row col-md-12">
+		<h3>Aether Login</h3>
+		<div class="form-group row">
+			<div class="col-md-2">User Name</div>
+			<div class="col-md-4"><input type="text" ng-model="vm.objLogin.username" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2">Password</div>
+			<div class="col-md-4"><input type="password" ng-model="vm.objLogin.password" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2"></div>
+			<div class="col-md-4">
+				<button type="submit" ng-click="vm.login()" class="btn btn-success">Login</button>
+				<a asp-action="Register" asp-controller="Home" class="btn btn-link">Create Account</a>
+			</div>
+		</div>
+	</div>
+</div>

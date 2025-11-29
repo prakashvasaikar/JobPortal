@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="AetherJobApp">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - AetherJobApp</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/AetherJobApp.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+	<script src="~/angularjs/app/app.js"></script>
+	<script src="~/angularjs/controller/usermastercontroller.js"></script>
+	<script src="~/angularjs/factory/usermasterfactory.js"></script>
+</head>
+<body>
+
+	<header>
+
+		<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<!-- Brand -->
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AetherJobApp</a>
+
+				<!-- Toggler for mobile -->
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+						aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<!-- Navbar content -->
+				<div class="collapse navbar-collapse" id="navbarContent">
+					<!-- Left side menu -->
+					<ul class="navbar-nav me-auto mb-2 mb-sm-0">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+						<li class="nav-item clsJobRequirement" style="display:none">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="JobRequirement">Job Requirement</a>
+						</li>
+
+					</ul>
+
+					<!-- Right side menu -->
+					<ul class="navbar-nav ms-auto mb-2 mb-sm-0" ng-controller="User as vm">
+						<li class="nav-item">
+							<span class="navbar-text me-2">Welcome, </span>
+							<label class="clsLab" id="strName">{{vm.username}}</label>
+
+							<button class="btn-sm btn-dark" type="submit" ng-click="vm.logout()"><i class="fas fa-sign-out"></i></button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2025 - AetherJobApp
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

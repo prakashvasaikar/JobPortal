@@ -1,0 +1,49 @@
+﻿@{
+	Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/AetherJobApp.styles.css" asp-append-version="true" />
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+<script src="~/angularjs/app/app.js"></script>
+<script src="~/angularjs/factory/usermasterfactory.js"></script>
+<script src="~/angularjs/controller/usermastercontroller.js"></script>
+
+<div ng-app="AetherJobApp" class="container" ng-controller="User as vm" ng-init="vm.init()">
+	<div class="row col-md-12">
+		<h3>Aether Register</h3>
+		<hr />
+		<div class="form-group row">
+			<div class="col-md-2">Full Name</div>
+			<div class="col-md-4"><input type="text" maxlength="50" ng-model="vm.objRegister.fullName" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2">Email</div>
+			<div class="col-md-4"><input type="email" maxlength="50" ng-model="vm.objRegister.email" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2">Mobile No</div>
+			<div class="col-md-4"><input type="text" maxlength="15" ng-model="vm.objRegister.mobileNo" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2">User Name</div>
+			<div class="col-md-4"><input type="text" maxlength="50" ng-model="vm.objRegister.username" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2">Password</div>
+			<div class="col-md-4"><input type="password" maxlength="100" ng-model="vm.objRegister.password" class="form-Control" /></div>
+		</div>
+		<p></p>
+		<div class="form-group row">
+			<div class="col-md-2"></div>
+			<div class="col-md-4">
+				<button type="submit" ng-click="vm.register()" class="btn btn-success">Register</button>
+				<a asp-action="Login" asp-controller="Home" class="btn btn-link">Back</a>
+			</div>
+		</div>
+	</div>
+</div>
