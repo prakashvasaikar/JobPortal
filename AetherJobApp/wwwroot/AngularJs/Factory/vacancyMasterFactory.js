@@ -1,4 +1,4 @@
-﻿app.factory("vacaancyFactory", function ($http) {
+﻿app.factory("vacancyFactory", function ($http) {
     var baseUrl = "/api/API/";
 
     return {

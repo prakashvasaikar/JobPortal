@@ -29,6 +29,14 @@ namespace AetherJobApp.Controllers
         {
             return View();
         }
+        public IActionResult Vacancy()
+        {
+            return View();
+        }
+        public IActionResult Requirement()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

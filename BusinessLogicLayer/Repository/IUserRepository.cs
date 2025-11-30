@@ -8,6 +8,7 @@ namespace BusinessLogicLayer.Repository
         IEnumerable<UserMasterModel> getAll();
         void saveRegistration(UserMasterModel model);
         UserMasterModel login(string username, string password);
+        void updateIsActiveStatus(int id,bool isactive);
     }
     public class UserRepository : IUserRepository
     {
@@ -28,6 +29,14 @@ namespace BusinessLogicLayer.Repository
         public void saveRegistration(UserMasterModel model)
         {
             _db.Add(model);
+            _db.SaveChanges();
+        }
+        public void updateIsActiveStatus(int id, bool isactive)
+        {
+            var data = _db.userMaster.FirstOrDefault(x => x.Id == id);
+            if (data == null) return;
+
+            data.IsActive = !data.IsActive;
             _db.SaveChanges();
         }
     }

@@ -1,10 +1,11 @@
 ﻿
-
+<script src="~/angularjs/factory/usermasterfactory.js"></script>
+<script src="~/angularjs/controller/usermastercontroller.js"></script>
 <div class="container" ng-controller="User as vm" ng-init="vm.loadUsers()">
 	<h3>User List</h3>
 	<div class="row col-md-12">
 		@* <table class="table table-hover table-bordered align-middle shadow-sm rounded-3"> *@
-		<table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-3">
+		<table id="tblUsers" class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-3">
 			<thead class="table-dark">
 				<tr>
 					<th>Role</th>
@@ -26,7 +27,7 @@
 						<span class="badge"
 							  ng-class="{'bg-success': e.isActive, 'bg-danger': !e.isActive}"
 							  style="cursor:pointer"
-							  ng-click="vm.toggleActive(e)">
+							  ng-click="vm.changeStatus(e.id,e.isActive)">
 							{{ e.isActive ? 'Active' : 'Inactive' }}
 						</span>
 					</td>

@@ -4,6 +4,8 @@
     return {
         getAll: () => $http.get(baseUrl + "getUserList"),
         login: objLogin => $http.post(baseUrl + "login", objLogin),
-        register: objRegister => $http.post(baseUrl + "registration", objRegister)
+        register: objRegister => $http.post(baseUrl + "registration", objRegister),
+        updateActive: (id, isActive) =>
+            $http.post(baseUrl + "updateActive", { id: id, isActive: isActive })
     };
 });

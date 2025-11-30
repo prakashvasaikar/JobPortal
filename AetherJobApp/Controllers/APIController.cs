@@ -57,6 +57,19 @@ namespace AetherJobApp.Controllers
                 return Ok(StatusCode(500, ex.Message));
             }
         }
+        [HttpPost("updateActive")]
+        public IActionResult UpdateActive([FromBody] UpdateActiveRequestModel model)
+        {
+            try
+            {
+                _userRepository.updateIsActiveStatus(model.Id,model.IsActive);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(StatusCode(500, ex.Message));
+            }
+        }
 
         [HttpGet("getUserList")]
         public IActionResult GetUserList()
