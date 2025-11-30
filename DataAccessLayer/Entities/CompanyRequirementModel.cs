@@ -14,6 +14,7 @@ namespace DataAccessLayer.Entities
         [Key]
         public int Id { get; set; }
         public int RefId_VacancyMaster { get; set; }
+        public int ApplyBy { get; set; }
         public string JobMode { get; set; }
         public string Description { get; set; }
         public string Experience { get; set; }

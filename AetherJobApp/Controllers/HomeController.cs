@@ -17,7 +17,6 @@ namespace AetherJobApp.Controllers
         {
             return View();
         }
-
         public IActionResult Register()
         {
             return View();
@@ -26,12 +25,14 @@ namespace AetherJobApp.Controllers
         {
             return View();
         }
-
+        public IActionResult UserList()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

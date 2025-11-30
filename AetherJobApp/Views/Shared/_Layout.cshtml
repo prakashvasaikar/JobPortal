@@ -29,27 +29,53 @@
 				</button>
 
 				<!-- Navbar content -->
-				<div class="collapse navbar-collapse" id="navbarContent">
+				<div class="collapse navbar-collapse" id="navbarContent" ng-controller="User as vm">
 					<!-- Left side menu -->
 					<ul class="navbar-nav me-auto mb-2 mb-sm-0">
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
-						<li class="nav-item clsJobRequirement" style="display:none">
+						<li class="nav-item" ng-if="vm.role==='Admin'">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UserList">Users</a>
+						</li>
+						<li class="nav-item" ng-if="vm.role==='Admin'">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="JobRequirement">Vacancies</a>
+						</li>
+						<li class="nav-item" ng-if="vm.role==='Admin'">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="JobRequirement">Job Requirement</a>
 						</li>
-
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Career">Career</a>
+						</li>
 					</ul>
 
 					<!-- Right side menu -->
+					
 					<ul class="navbar-nav ms-auto mb-2 mb-sm-0" ng-controller="User as vm">
-						<li class="nav-item">
-							<span class="navbar-text me-2">Welcome, </span>
-							<label class="clsLab" id="strName">{{vm.username}}</label>
 
-							<button class="btn-sm btn-dark" type="submit" ng-click="vm.logout()"><i class="fas fa-sign-out"></i></button>
+						<!-- LOGGED IN -->
+						<li class="nav-item d-flex align-items-center" ng-if="vm.username">
+							<span class="navbar-text me-2">Welcome,</span>
+							<label class="fw-bold text-primary me-3">{{vm.username}}</label>
+
+							<!-- Logout Icon -->
+							<button class="btn btn-danger btn-sm rounded-circle shadow-sm"
+									ng-click="vm.logout()"
+									title="Logout">
+								<i class="fa fa-sign-out-alt"></i>
+							</button>
 						</li>
+
+						<!-- NOT LOGGED IN -->
+						<li class="nav-item" ng-if="!vm.username">
+							<a href="/Home/Login" class="btn btn-primary btn-sm rounded-circle shadow-sm"
+							   title="Login">
+								<i class="fa fa-sign-in-alt"></i>
+							</a>
+						</li>
+
 					</ul>
+
 				</div>
 			</div>
 		</nav>
@@ -60,11 +86,11 @@
 		</main>
 	</div>
 
-	<footer class="border-top footer text-muted">
+	@* <footer class="border-top footer text-muted">
 		<div class="container">
 			&copy; 2025 - AetherJobApp
 		</div>
-	</footer>
+	</footer> *@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>

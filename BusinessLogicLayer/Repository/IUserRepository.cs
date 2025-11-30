@@ -5,8 +5,9 @@ namespace BusinessLogicLayer.Repository
 {
     public interface IUserRepository
     {
-        void SaveRegistration(UserMasterModel model);
-        UserMasterModel Login(string username, string password);
+        IEnumerable<UserMasterModel> getAll();
+        void saveRegistration(UserMasterModel model);
+        UserMasterModel login(string username, string password);
     }
     public class UserRepository : IUserRepository
     {
@@ -15,13 +16,16 @@ namespace BusinessLogicLayer.Repository
         {
             _db = aetherDbContext;
         }
-
-        public UserMasterModel Login(string username, string password)
+        public IEnumerable<UserMasterModel> getAll()
+        {
+            return _db.userMaster.ToList();
+        }
+        public UserMasterModel login(string username, string password)
         {
             return _db.userMaster.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == password && x.IsActive);
         }
 
-        public void SaveRegistration(UserMasterModel model)
+        public void saveRegistration(UserMasterModel model)
         {
             _db.Add(model);
             _db.SaveChanges();

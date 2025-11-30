@@ -3,9 +3,11 @@
     var vm = this;
     var objLogin = {};
     var objRegister = {};
+    var listUsers = [];
     vm.username = "";
-
+    vm.role = "";
     vm.init = function () {
+
         vm.objRegister = {
             fullName: "",
             username: "",
@@ -21,14 +23,9 @@
     };
 
     (function () {
-        debugger
         vm.username = localStorage.getItem("User");
-        if (localStorage.getItem("Role") == "User") {
-            document.querySelector('.clsJobRequirement').style.display = 'none';
-        }
-        else {
-            document.querySelector('.clsJobRequirement').style.display = 'block';
-        }
+        vm.role = localStorage.getItem("Role");
+       
     })();
 
     vm.login = function () {
@@ -41,7 +38,6 @@
                 debugger
                 localStorage.setItem("User", res.data.login);
                 localStorage.setItem("Role", res.data.roles);
-                vm.username = res.data.login;
                 window.location.href = "/Home/Index";
             })
             .catch(err => console.error("Issue in login api", err));
@@ -79,6 +75,11 @@
                 window.location.href = "/Home/Login";
             })
             .catch(err => console.error("Issue in register api", err));
+    }
+
+    vm.loadUsers = function () {
+        debugger
+        userFactory.getAll().then(res => vm.listUsers = res.data).catch(err => console.error("Get User Api issue",err))
     }
 
     vm.init();

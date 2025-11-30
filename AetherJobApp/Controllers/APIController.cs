@@ -26,7 +26,7 @@ namespace AetherJobApp.Controllers
         {
             try
             {
-                var data = _userRepository.Login(requestModel.UserName, requestModel.Password);
+                var data = _userRepository.login(requestModel.UserName, requestModel.Password);
                 return Ok(new { Login = data.FullName, Roles = data.Role });
             }
             catch (Exception)
@@ -49,13 +49,20 @@ namespace AetherJobApp.Controllers
                 objModel.Password = userMasterModel.Password;
                 objModel.Email = userMasterModel.Email;
                 objModel.MobileNo = userMasterModel.MobileNo;
-                _userRepository.SaveRegistration(objModel);
+                _userRepository.saveRegistration(objModel);
                 return Ok(new { success = true });
             }
             catch (Exception ex)
             {
                 return Ok(StatusCode(500, ex.Message));
             }
+        }
+
+        [HttpGet("getUserList")]
+        public IActionResult GetUserList()
+        {
+            var data = _userRepository.getAll();
+            return Ok(data);
         }
 
         #region Vacancy Master
