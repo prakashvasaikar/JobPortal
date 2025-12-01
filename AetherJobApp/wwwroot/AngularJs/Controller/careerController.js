@@ -1,4 +1,4 @@
-﻿app.controller("Career", function (careerFactory) {
+﻿app.controller("Career", function (careerFactory, toastr) {
     var vm = this;
 
     vm.objCareerList = [];
@@ -7,20 +7,24 @@
         careerFactory.getJobRequirementList()
             .then(res => {
                 vm.objCareerList = res.data;
+                toastr.success("Jobs loaded successfully");
             })
-            .catch(err => console.error("jobRequirement list error", err));
+            .catch(err => {
+                console.error("jobRequirement list error", err);
+                toastr.error("Failed to load jobs");
+            });
     };
 
     vm.applyJob = function (id) {
-        debugger
         var user = localStorage.getItem("User");
 
-        if (user === null || user.trim() === "") {
-            alert("Please register");
+        if (!user || user.trim() === "") {
+            toastr.warning("Please register to apply");
+            return;
         }
 
+        toastr.success("Job Applied Successfully!");
     };
 
-    // Call on page load
     vm.loadJobRequirement();
 });
