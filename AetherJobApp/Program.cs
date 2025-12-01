@@ -9,8 +9,8 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<AetherDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("aetherDbString")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
-builder.Services.AddScoped<ICompanyRequirementRepository, CompanyRequirementRepository>();
 builder.Services.AddScoped<IVacancyRepository, VacancyRepository>();
+builder.Services.AddScoped<ICompanyJobRequirementRepository, CompanyJobRequirementRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

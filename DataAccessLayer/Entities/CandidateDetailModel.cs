@@ -17,6 +17,7 @@ namespace DataAccessLayer.Entities
         public int RefId_UserMaster { get; set; }
         public string PrimarySkill { get; set; }
         public string Status { get; set; }
+        public string Experience { get; set; }
         public string Resume { get; set; }
         public string ReferBy { get; set; }
         public int ReviewBy { get; set; }

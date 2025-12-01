@@ -23,11 +23,12 @@ namespace BusinessLogicLayer.Repository
         }
         public UserMasterModel login(string username, string password)
         {
-            return _db.userMaster.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == password && x.IsActive);
+            return _db.userMaster.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == password);
         }
 
         public void saveRegistration(UserMasterModel model)
         {
+            model.Role = "User";
             _db.Add(model);
             _db.SaveChanges();
         }

@@ -14,13 +14,9 @@ namespace DataAccessLayer.Entities
         [Key]
         public int Id { get; set; }
         public string VacancyType { get; set; }
-        public string Status { get; set; }
-        public DateTime PostedOn { get; set; } = DateTime.Now;
-        public DateTime? ExpiredOn { get; set; }
         public bool IsActive { get; set; } = true;
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime? UpdatedOn { get; set; } = DateTime.Now;
     }
 
 }

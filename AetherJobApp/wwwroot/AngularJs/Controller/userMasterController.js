@@ -44,16 +44,10 @@
     vm.changeStatus = function (id, activeStatus) {
         userFactory.updateActive(id, activeStatus)
             .then(res => {
+                debugger
                 vm.loadUsers();
             })
             .catch(err => console.error("Update error", err));
     };
-
-    //(function () {
-    //    vm.username = localStorage.getItem("User");
-    //    vm.role = localStorage.getItem("Role");
-    //    /*vm.loadUsers();*/
-    //})();
     vm.init();
-    vm.loadUsers();
 });

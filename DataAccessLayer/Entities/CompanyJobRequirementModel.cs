@@ -8,17 +8,21 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Entities
 {
-    [Table("CompanyRequirement")]
-    public class CompanyRequirementModel
+    [Table("CompanyJobRequirement")]
+    public class CompanyJobRequirementModel
     {
         [Key]
         public int Id { get; set; }
         public int RefId_VacancyMaster { get; set; }
-        public int ApplyBy { get; set; }
+        public string Status { get; set; }
+        public DateTime PostedOn { get; set; } = DateTime.Now;
+        public DateTime? ExpiredOn { get; set; }
         public string JobMode { get; set; }
-        public string Description { get; set; }
-        public string Experience { get; set; }
+        public string JobDescription { get; set; }
+        public bool IsActive { get; set; } = true;
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime? UpdatedOn { get; set; } = DateTime.Now;
     }
+
 }

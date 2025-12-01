@@ -11,15 +11,15 @@ namespace AetherJobApp.Controllers
     public class APIController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IVacancyRepository _vacancyRepository;
+        private readonly ICompanyJobRequirementRepository _jobRequirementRepository;
         private readonly ICandidateRepository _candidateRepository;
-        private readonly ICompanyRequirementRepository _companyRequirementRepository;
-        public APIController(IUserRepository userRepository, IVacancyRepository vacancyRepository, ICandidateRepository candidateRepository, ICompanyRequirementRepository companyRequirementRepository)
+        private readonly IVacancyRepository _vacancyRepository;
+        public APIController(IUserRepository userRepository, ICompanyJobRequirementRepository jobRequirementRepository, ICandidateRepository candidateRepository, IVacancyRepository vacancyRepository)
         {
             _userRepository = userRepository;
-            _vacancyRepository = vacancyRepository;
+            _jobRequirementRepository = jobRequirementRepository;
             _candidateRepository = candidateRepository;
-            _companyRequirementRepository = companyRequirementRepository;
+            _vacancyRepository = vacancyRepository;
         }
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequestModel requestModel)
@@ -27,13 +27,22 @@ namespace AetherJobApp.Controllers
             try
             {
                 var data = _userRepository.login(requestModel.UserName, requestModel.Password);
-                return Ok(new { Login = data.FullName, Roles = data.Role });
+                if (data == null)
+                {
+                    return BadRequest(new { Message = "Invalid username or password" });
+                }
+                if (!data.IsActive)
+                {
+                    return BadRequest(new { Message = "This user is deactivated" });
+                }
+                return Ok(new { Login = data.FullName, Roles = data.Role, UserId = data.Id });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return StatusCode(500, new { Message = "Internal server error", Error = ex.Message });
             }
         }
+
         [HttpPost("registration")]
         public IActionResult RegistrationUser([FromBody] UserMasterRequestModel userMasterModel)
         {
@@ -62,7 +71,7 @@ namespace AetherJobApp.Controllers
         {
             try
             {
-                _userRepository.updateIsActiveStatus(model.Id,model.IsActive);
+                _userRepository.updateIsActiveStatus(model.Id, model.IsActive);
                 return Ok(new { success = true });
             }
             catch (Exception ex)
@@ -77,13 +86,32 @@ namespace AetherJobApp.Controllers
             var data = _userRepository.getAll();
             return Ok(data);
         }
-
         #region Vacancy Master
         [HttpGet("getVacancyList")]
-        public IActionResult GetVacancyList()
+        public async Task<IActionResult> GetVacancyList()
         {
-            var data = _vacancyRepository.getList();
-            return Ok(data);
+            try
+            {
+                var data = await _vacancyRepository.getList();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching vacancy list.");
+            }
+        }
+        [HttpGet("getActiveVacancyList")]
+        public async Task<IActionResult> getActiveList()
+        {
+            try
+            {
+                var data = await _vacancyRepository.getActiveList();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching vacancy list.");
+            }
         }
         [HttpGet("getVacancyInfoById/{id}")]
         public IActionResult GetVacancyInfoById(int id)
@@ -92,7 +120,7 @@ namespace AetherJobApp.Controllers
             return Ok(data);
         }
         [HttpPost("saveVacancy")]
-        public IActionResult SaveVacancy([FromBody] VacancyMasterModel userMasterModel)
+        public IActionResult SaveVacancy([FromBody] VacancyMasterModel model)
         {
             try
             {
@@ -100,6 +128,7 @@ namespace AetherJobApp.Controllers
                 {
                     return BadRequest("Please check validation");
                 }
+                _vacancyRepository.saveVacancy(model);
                 return Ok(new { success = true });
             }
             catch (Exception ex)
@@ -107,8 +136,73 @@ namespace AetherJobApp.Controllers
                 return Ok(StatusCode(500, ex.Message));
             }
         }
-        [HttpDelete("deleteCandidate/{id}")]
-        public IActionResult DeleteCandidate(int id)
+        [HttpPost("updateVacancyActive")]
+        public IActionResult UpdateVacancyActive([FromBody] UpdateActiveRequestModel model)
+        {
+            try
+            {
+                _vacancyRepository.updateIsActiveStatus(model.Id, model.IsActive);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(StatusCode(500, ex.Message));
+            }
+        }
+        [HttpDelete("deleteVacancy/{id}")]
+        public IActionResult DeleteVacancy(int id)
+        {
+            _vacancyRepository.deleteById(id);
+            return Ok(new { success = true });
+        }
+       
+        #endregion
+
+        #region Job Requirement
+        [HttpGet("getJobRequirementList")]
+        public async Task<IActionResult> GetJobRequirementList()
+        {
+            var data = await _jobRequirementRepository.getList();
+            return Ok(data);
+        }
+        [HttpGet("getJobRequirementInfoById/{id}")]
+        public IActionResult GetJobRequirementInfoById(int id)
+        {
+            var data = _jobRequirementRepository.getInfoById(id);
+            return Ok(data);
+        }
+        [HttpPost("saveJobRequirement")]
+        public IActionResult SaveJobRequirement([FromBody] CompanyJobRequirementModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Please check validation");
+                }
+                _jobRequirementRepository.saveJobRequirement(model);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(StatusCode(500, ex.Message));
+            }
+        }
+        [HttpPost("updateJobRequirementActive")]
+        public IActionResult UpdateJobRequirementActive([FromBody] UpdateActiveRequestModel model)
+        {
+            try
+            {
+                _jobRequirementRepository.updateIsActiveStatus(model.Id, model.IsActive);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(StatusCode(500, ex.Message));
+            }
+        }
+        [HttpDelete("deleteJobRequirement/{id}")]
+        public IActionResult DeleteJobRequirement(int id)
         {
             _vacancyRepository.deleteById(id);
             return Ok(new { success = true });
@@ -128,7 +222,7 @@ namespace AetherJobApp.Controllers
             var data = _candidateRepository.getInfoById(id);
             return Ok(data);
         }
-        
+
         #endregion
     }
 }

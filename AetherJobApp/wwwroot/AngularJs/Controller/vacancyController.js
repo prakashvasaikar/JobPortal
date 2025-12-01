@@ -1,4 +1,4 @@
-﻿app.controller("Vacancy", function ($scope, vacancyFactory) {
+﻿app.controller("Vacancy", function (vacancyFactory) {
 
     var vm = this;
     vm.objVacancy = {};
@@ -10,34 +10,39 @@
         vm.objVacancy = {
             id: 0,
             vacancyType: "",
-            status: "open",
-            postedOn: null,
-            expiredOn: null,
             isActive: true,
-            createdBy: 1
+            createdBy: localStorage.getItem("UserId"),
         };
     };
 
     vm.loadVacancy = function () {
-
+        debugger
         vacancyFactory.getVacancyList()
             .then(res => {
                 vm.objVacancyList = res.data;
 
                 setTimeout(() => {
-                    if ($.fn.DataTable.isDataTable("#tblVacancy")) {
-                        $('#tblVacancy').DataTable().destroy();
+                    if ($.fn.DataTable && !$.fn.DataTable.isDataTable('#tblVacancy')) {
+                        $('#tblVacancy').DataTable({
+                            pageLength: 10,
+                            lengthMenu: [5, 10, 25, 50],
+                            ordering: true
+                        });
                     }
-
-                    $('#tblVacancy').DataTable({
-                        pageLength: 10,
-                        lengthMenu: [5, 10, 25, 50],
-                        ordering: true
-                    });
-
-                }, 200);
+                }, 100);
             })
             .catch(err => console.error("Vacancy list error", err));
+    };
+
+    vm.deleteVacancy = function (id) {
+        if (confirm("Are you sure you want to delete?")) {
+            vacancyFactory.deleteVacancyById(id)
+                .then(res => {
+                    //alert("Deleted successfully!!");
+                    vm.loadVacancy();
+                })
+                .catch(err => console.error("Vacancy list error", err));
+        }
     };
 
     vm.openAddModal = function () {
@@ -56,57 +61,48 @@
         modal.show();
     };
 
-    // -----------------------------
-    // OPEN EDIT MODAL
-    // -----------------------------
-    //vm.openEditModal = function (id) {
-    //    vm.isEdit = true;
+    vm.openEditModal = function (id) {
+        vacancyFactory.getVacancyInfoById(id)
+            .then(res => {
+                debugger
+                vm.objVacancy = res.data;
+                vm.objVacancy.postedOn = vm.objVacancy.postedOn ? new Date(vm.objVacancy.postedOn) : null;
+                vm.objVacancy.expiredOn = vm.objVacancy.expiredOn ? new Date(vm.objVacancy.expiredOn) : null;
+                modal.show();
+            })
+            .catch(err => console.error("Get vacancy error", err));
+    };
 
-    //    vacancyFactory.getVacancyInfoById(id)
-    //        .then(res => {
-    //            vm.objVacancy = res.data;
-
-    //            // Format dates for input[type=date]
-    //            vm.objVacancy.postedOn = vm.objVacancy.postedOn?.split("T")[0];
-    //            vm.objVacancy.expiredOn = vm.objVacancy.expiredOn?.split("T")[0];
-
-    //            modal.show();
-    //        })
-    //        .catch(err => console.error("Get vacancy error", err));
-    //};
-
-    // -----------------------------
-    // SAVE VACANCY (ADD/EDIT)
-    // -----------------------------
     vm.saveVacancy = function () {
+        vm.objVacancy.createdBy = localStorage.getItem("UserId");
+
+        if (!vm.objVacancy.vacancyType || vm.objVacancy.vacancyType.trim() === "") {
+            alert("Vacancy Type is required.");
+            return;
+        }
 
         vacancyFactory.saveVacancy(vm.objVacancy)
             .then(res => {
-                alert("Saved Successfully !");
-                modal.hide();
+                alert("Saved Successfully!");
+                bootstrap.Modal.getInstance(document.getElementById('vacancyModal')).hide();
                 vm.loadVacancy();
             })
             .catch(err => console.error("Save vacancy error", err));
     };
 
-    // -----------------------------
-    // CHANGE ACTIVE / INACTIVE
-    // -----------------------------
+   
     vm.changeStatus = function (id, status) {
-        vacancyFactory.updateStatus(id, !status)
+        debugger
+        vacancyFactory.updateActive(id, !status)
             .then(() => vm.loadVacancy())
             .catch(err => console.error("Status update error", err));
     };
 
-    // -----------------------------
-    // INITIALIZE BOOTSTRAP MODAL
-    // -----------------------------
+   
     setTimeout(() => {
         modal = new bootstrap.Modal(document.getElementById("vacancyModal"));
     }, 500);
 
-    // CALL INIT
     vm.init();
-    vm.loadVacancy();
 
 });

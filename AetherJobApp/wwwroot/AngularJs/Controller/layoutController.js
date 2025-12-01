@@ -1,4 +1,4 @@
-﻿app.controller("Layout", function () {
+﻿app.controller("Layout", function ($scope) {
 
     var vm = this;   // 🔥 correct place
 

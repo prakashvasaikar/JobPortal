@@ -17,12 +17,19 @@
         }
         userFactory.login(vm.objLogin)
             .then(res => {
-                debugger
+                localStorage.setItem("UserId", res.data.userId);
                 localStorage.setItem("User", res.data.login);
                 localStorage.setItem("Role", res.data.roles);
                 window.location.href = "/Home/Index";
             })
-            .catch(err => console.error("Issue in login api", err));
+            .catch(err => {
+                if (err.data && err.data.message) {
+                    alert(err.data.message);
+                } else {
+                    alert("Login failed. Please try again.");
+                }
+            });
+
     };
 
     vm.init();

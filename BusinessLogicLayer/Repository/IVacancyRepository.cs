@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.DbConnection;
 using DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace BusinessLogicLayer.Repository
 {
     public interface IVacancyRepository
     {
-        IEnumerable<VacancyMasterModel> getList();
+        Task<IEnumerable<VacancyMasterModel>> getList();
         VacancyMasterModel getInfoById(int id);
         void saveVacancy(VacancyMasterModel model);
         void deleteById(int id);
+        void updateIsActiveStatus(int id, bool isactive);
+        Task<IEnumerable<VacancyMasterModel>> getActiveList();
     }
     public class VacancyRepository : IVacancyRepository
     {
@@ -22,26 +25,20 @@ namespace BusinessLogicLayer.Repository
         {
             _db = aetherDbContext;
         }
-        public void deleteById(int id)
-        {
-            var data = _db.vacancyMaster.Where(x => x.Id == id).FirstOrDefault();
-            if (data != null)
-            {
-                _db.vacancyMaster.Remove(data);
-                _db.SaveChanges();
-            }
-        }
-
         public VacancyMasterModel getInfoById(int id)
         {
             return _db.vacancyMaster.FirstOrDefault(x => x.Id == id);
         }
-
-        public IEnumerable<VacancyMasterModel> getList()
+        public async Task<IEnumerable<VacancyMasterModel>> getList()
         {
-            return _db.vacancyMaster.ToList();
+            return await _db.vacancyMaster
+                            .OrderByDescending(x => x.Id)
+                            .ToListAsync(); // async EF call
         }
-
+        public async Task<IEnumerable<VacancyMasterModel>> getActiveList()
+        {
+            return await _db.vacancyMaster.Where(x => x.IsActive).ToListAsync();
+        }
         public void saveVacancy(VacancyMasterModel model)
         {
             if (model.Id == 0)
@@ -52,14 +49,25 @@ namespace BusinessLogicLayer.Repository
             {
                 var data = _db.vacancyMaster.Where(x => x.Id == model.Id).FirstOrDefault();
                 data.VacancyType = model.VacancyType;
-                data.Status = model.Status;
-                data.PostedOn = model.PostedOn;
-                data.ExpiredOn = model.ExpiredOn;
                 data.IsActive = model.IsActive;
-                data.CreatedBy = model.CreatedBy;
-                data.CreatedOn = model.CreatedOn;
-                data.UpdatedOn = model.UpdatedOn;
             }
+            _db.SaveChanges();
+        }
+        public void deleteById(int id)
+        {
+            var data = _db.vacancyMaster.Where(x => x.Id == id).FirstOrDefault();
+            if (data != null)
+            {
+                _db.vacancyMaster.Remove(data);
+                _db.SaveChanges();
+            }
+        }
+        public void updateIsActiveStatus(int id, bool isActive)
+        {
+            var data = _db.vacancyMaster.FirstOrDefault(x => x.Id == id);
+            if (data == null) return;
+            data.IsActive = isActive;
+
             _db.SaveChanges();
         }
     }

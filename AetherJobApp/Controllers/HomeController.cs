@@ -33,6 +33,10 @@ namespace AetherJobApp.Controllers
         {
             return View();
         }
+        public IActionResult Career()
+        {
+            return View();
+        }
         public IActionResult Requirement()
         {
             return View();

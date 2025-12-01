@@ -12,9 +12,9 @@ namespace DataAccessLayer.DbConnection
     {
         public AetherDbContext(DbContextOptions<AetherDbContext> option) : base(option) { }
         public DbSet<RoleMasterModel> roleMaster { get; set; }
-        public DbSet<CompanyRequirementModel> companyRequirement { get; set; }
-        public DbSet<UserMasterModel> userMaster { get; set; }
         public DbSet<VacancyMasterModel> vacancyMaster { get; set; }
+        public DbSet<UserMasterModel> userMaster { get; set; }
+        public DbSet<CompanyJobRequirementModel> companyJobRequirement { get; set; }
         public DbSet<CandidateDetailModel> candidateDetail { get; set; }
     }
 }

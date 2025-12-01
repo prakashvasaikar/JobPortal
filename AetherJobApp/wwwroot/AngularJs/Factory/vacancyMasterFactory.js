@@ -3,7 +3,11 @@
 
     return {
         getVacancyList: () => $http.get(baseUrl + "getVacancyList"),
-        getVacancyInfoById: id => $http.get(baseUrl + "getVacancyInfoById" + id),
-        saveVacancy: objVacancy => $http.post(baseUrl + "saveVacancy", objCandidateDetail),
+        getActiveVacancyList: () => $http.get(baseUrl + "getActiveVacancyList"),
+        getVacancyInfoById: id => $http.get(baseUrl + "getVacancyInfoById/" + id),
+        saveVacancy: objVacancy => $http.post(baseUrl + "saveVacancy", objVacancy),
+        updateActive: (id, isActive) =>
+            $http.post(baseUrl + "updateVacancyActive", { id: id, isActive: isActive }),
+        deleteVacancyById: id => $http.delete(baseUrl + "deleteVacancy/" + id),
     };
 });

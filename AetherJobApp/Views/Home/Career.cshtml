@@ -1,0 +1,65 @@
+﻿
+<script src="~/angularjs/factory/careerfactory.js"></script>
+<script src="~/angularjs/controller/careercontroller.js"></script>
+<div class="container my-5" ng-controller="Career as vm">
+    <h2 class="text-center mb-4 fw-bold">Career Opportunities</h2>
+
+    <div class="row justify-content-center">
+
+        <!-- Job Card -->
+        <div class="col-md-4 mb-4" ng-repeat="job in vm.objCareerList">
+            <div class="card shadow-lg border-0 rounded-4 h-100">
+
+                <!-- Header -->
+                <div class="card-header bg-gradient-dark text-white rounded-top-4"
+                     style="background: linear-gradient(90deg, #343a40, #495057);">
+                    <h5 class="mb-0 fw-semibold">{{ job.vacancyType }}</h5>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body">
+
+                    <!-- Status + Mode -->
+                    <p class="mb-2">
+                        <span class="badge px-3 py-2"
+                              ng-class="{
+                                  'bg-success': job.status === 'Open',
+                                  'bg-danger': job.status === 'Closed'
+                              }">
+                            {{ job.status }}
+                        </span>
+
+                        <span class="badge bg-info text-dark px-3 py-2 ms-2">
+                            {{ job.jobMode }}
+                        </span>
+                    </p>
+
+                    <p><strong>Posted On:</strong> {{ job.postedOn | date:'yyyy-MM-dd' }}</p>
+                    <p><strong>Expires On:</strong> {{ job.expiredOn | date:'yyyy-MM-dd' }}</p>
+
+                    <p class="text-muted">
+                        <strong>Description:</strong><br>
+                        {{ job.jobDescription }}
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer bg-white text-center border-0 pb-4">
+                    <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm fw-semibold"
+                            ng-click="vm.applyJob(job.id)">
+                        Apply Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty Message -->
+        <div class="col-12" ng-if="vm.objCareerList.length === 0">
+            <div class="alert alert-danger text-center">
+                No Career Opportunities Found
+            </div>
+        </div>
+
+    </div>
+</div>
+
