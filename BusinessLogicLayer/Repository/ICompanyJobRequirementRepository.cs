@@ -16,6 +16,7 @@ namespace BusinessLogicLayer.Repository
         void saveJobRequirement(CompanyJobRequirementModel model);
         void deleteById(int id);
         void updateIsActiveStatus(int id, bool isactive);
+        Task<IEnumerable<object>> getActiveList();
     }
     public class CompanyJobRequirementRepository : ICompanyJobRequirementRepository
     {
@@ -26,12 +27,39 @@ namespace BusinessLogicLayer.Repository
         }
         public void deleteById(int id)
         {
-            var data = _db.vacancyMaster.Where(x => x.Id == id).FirstOrDefault();
+            var data = _db.companyJobRequirement.Where(x => x.Id == id).FirstOrDefault();
             if (data != null)
             {
-                _db.vacancyMaster.Remove(data);
+                _db.companyJobRequirement.Remove(data);
                 _db.SaveChanges();
             }
+        }
+
+        public async Task<IEnumerable<object>> getActiveList()
+        {
+            var data = from job in _db.companyJobRequirement
+                       join vac in _db.vacancyMaster
+                           on job.RefId_VacancyMaster equals vac.Id into gj
+                       from subVac in gj.DefaultIfEmpty()
+                       where job.IsActive
+                       orderby job.Id descending
+                       select new
+                       {
+                           job.Id,
+                           job.RefId_VacancyMaster,
+                           VacancyType = subVac != null ? subVac.VacancyType : null,
+                           job.Status,
+                           job.PostedOn,
+                           job.ExpiredOn,
+                           job.JobMode,
+                           job.JobDescription,
+                           job.IsActive,
+                           job.CreatedBy,
+                           job.CreatedOn,
+                           job.UpdatedOn
+                       };
+
+            return await data.ToListAsync();
         }
 
         public CompanyJobRequirementModel getInfoById(int id)
@@ -39,10 +67,6 @@ namespace BusinessLogicLayer.Repository
             return _db.companyJobRequirement.FirstOrDefault(x => x.Id == id);
         }
 
-        //public IEnumerable<CompanyJobRequirementModel> getList()
-        //{
-        //    return _db.companyJobRequirement.OrderByDescending(x => x.Id).ToList();
-        //}
         public async Task<IEnumerable<object>> getList()
         {
             var data = from job in _db.companyJobRequirement

@@ -51,11 +51,8 @@
         vm.objVacancy = {
             id: 0,
             vacancyType: "",
-            status: "open",
-            postedOn: new Date(),
-            expiredOn: new Date(),
-            isActive: true,
-            createdBy: 1
+            status: "open"
+           
         };
 
         modal.show();

@@ -165,6 +165,12 @@ namespace AetherJobApp.Controllers
             var data = await _jobRequirementRepository.getList();
             return Ok(data);
         }
+        [HttpGet("getJobRequirementActiveList")]
+        public async Task<IActionResult> GetJobRequirementActiveList()
+        {
+            var data = await _jobRequirementRepository.getActiveList();
+            return Ok(data);
+        }
         [HttpGet("getJobRequirementInfoById/{id}")]
         public IActionResult GetJobRequirementInfoById(int id)
         {
@@ -204,17 +210,25 @@ namespace AetherJobApp.Controllers
         [HttpDelete("deleteJobRequirement/{id}")]
         public IActionResult DeleteJobRequirement(int id)
         {
-            _vacancyRepository.deleteById(id);
+            _jobRequirementRepository.deleteById(id);
             return Ok(new { success = true });
         }
         #endregion
 
         #region Candidate Detail
         [HttpGet("getCandidateList")]
-        public IActionResult GetCandidateList()
+        public async Task<IActionResult> GetCandidateList()
         {
-            var data = _candidateRepository.getList();
-            return Ok(data);
+            try
+            {
+                var data = await _candidateRepository.GetAllCandidates();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+            
         }
         [HttpGet("getCandidateInfoById/{id}")]
         public IActionResult GetCandidateInfoById(int id)
@@ -224,5 +238,84 @@ namespace AetherJobApp.Controllers
         }
 
         #endregion
+
+        #region Career
+        [HttpPost("saveApplyJob")]
+        public IActionResult SaveApplyJob([FromForm] CareerRequestModel model, IFormFile resume)
+        {
+            try
+            {
+                var data = _candidateRepository.checkExistJobApply(model.RefId_UserMaster,model.RefId_CompanyRequirement);
+                if (data != null)
+                {
+                    // Return existing application details
+                    return Ok(new
+                    {
+                        success = false,
+                        message = "Candidate has already applied for this job.",
+                        data = data
+                    });
+                }
+
+                CandidateDetailModel objCandidateDetailModel = new CandidateDetailModel();
+                if (resume != null && resume.Length > 0)
+                {
+                    var ext = Path.GetExtension(resume.FileName).ToLower();
+
+                    if (ext != ".pdf")
+                        return BadRequest(new { success = false, message = "Only PDF files are allowed." });
+
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "resumes");
+
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
+
+                    var uniqueFileName = Guid.NewGuid() + ext;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        resume.CopyToAsync(stream);
+                    }
+                    objCandidateDetailModel.RefId_UserMaster = model.RefId_UserMaster;
+                    objCandidateDetailModel.RefId_CompanyRequirement = model.RefId_CompanyRequirement;
+                    objCandidateDetailModel.PrimarySkill = model.PrimarySkill;
+                    objCandidateDetailModel.Status = model.Status;
+                    objCandidateDetailModel.ExperienceYear = model.ExperienceYear;
+                    objCandidateDetailModel.ExperienceMonth = model.ExperienceMonth;
+                    objCandidateDetailModel.ResumePath = uniqueFileName;
+                    objCandidateDetailModel.ReferBy = model.ReferBy;
+                    //objCandidateDetailModel.ReviewDate = null;
+                    _candidateRepository.saveCandidate(objCandidateDetailModel);
+                }
+
+                return Ok(new { success = true, message = "Job applied successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+        [HttpGet("download{fileName}")]
+        public IActionResult DownloadResume(string fileName)
+        {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "resumes");
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound("File not found");
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+
+            return File(memory, "application/pdf", fileName);
+        }
+
+        #endregion
+
     }
 }

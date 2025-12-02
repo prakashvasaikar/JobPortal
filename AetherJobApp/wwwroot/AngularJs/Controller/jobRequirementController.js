@@ -65,10 +65,18 @@
             postedOn: new Date(),
             expiredOn: new Date(),
             isActive: true,
-            createdBy: 1
+            createdBy: localStorage.getItem("UserId")
         };
 
         modal.show();
+    };
+
+    vm.deleteJobRequirement = function (id) {
+        jobRequirementFactory.deletejobRequirementById(id)
+            .then(res => {
+                vm.loadJobRequirement();
+            })
+            .catch(err => console.error("Save jobRequirement error", err));
     };
 
     vm.openEditModal = function (id) {

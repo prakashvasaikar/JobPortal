@@ -1,65 +1,144 @@
 ﻿<!DOCTYPE html>
 <html lang="en" ng-app="AetherJobApp">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AetherJobApp</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - AetherJobApp</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+	<!-- Bootstrap & Site CSS -->
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/AetherJobApp.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    <!-- jQuery (must load first) -->
-    <script src="~/lib/jquery-3.7.1.min.js"></script>
+	<!-- jQuery (must load first) -->
+	<script src="~/lib/jquery-3.7.1.min.js"></script>
 
-    <!-- AngularJS & dependencies -->
-    <script src="~/lib/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular-animate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<!-- DataTables CSS & JS (must load after jQuery) -->
+	<link href="~/lib/datatables.min.css" rel="stylesheet" />
+	<script src="~/lib/datatables.min.js"></script>
 
-    <!-- Main app module -->
-    <script src="~/angularjs/app/app.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+	<!-- AngularJS (after jQuery & DataTables) -->
+	<script src="~/lib/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular-animate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <!-- Factories -->
-    <script src="~/angularjs/factory/careerfactory.js"></script>
-
-    <!-- Controllers -->
-    <script src="~/angularjs/controller/careercontroller.js"></script>
-    <script src="~/angularjs/controller/layoutController.js"></script>
-
+	<!-- Your AngularJS App Files -->
+	<script src="~/angularjs/app/app.js"></script>
+	<script src="~/angularjs/controller/layoutController.js"></script>
+    <style>
+        .navbar-nav .nav-item.active .nav-link {
+            font-weight: bold;
+            color: #0d6efd !important; /* Bootstrap primary */
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
+
 <body>
-    <header>
+	<header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid" ng-controller="Layout as vm">
+            <div class="container-fluid">
+
+                <!-- Brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AetherJobApp</a>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item" ng-if="vm.username">
-                        <span class="navbar-text me-2">Welcome, {{vm.username}}</span>
-                        <button class="btn btn-danger btn-sm" ng-click="vm.logout()">
-                            <i class="fa fa-sign-out-alt"></i>
-                        </button>
-                    </li>
-                    <li class="nav-item" ng-if="!vm.username">
-                        <a href="/Home/Login" class="btn btn-primary btn-sm">
-                            <i class="fa fa-sign-in-alt"></i>
-                        </a>
-                    </li>
-                </ul>
+
+                <!-- Toggler for mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar content -->
+                <div class="collapse navbar-collapse" id="navbarContent" ng-controller="Layout as vm" ng-init="vm.init()">
+
+                    <!-- Left side menu -->
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+
+                        <!-- Home -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <!-- Users (Admin only) -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "UserList" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                            ng-if="vm.role==='Admin'">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="UserList">Users</a>
+                        </li>
+
+                        <!-- Vacancies (Admin only) -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Vacancy" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                            ng-if="vm.role==='Admin'">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Vacancy">Vacancies</a>
+                        </li>
+
+                        <!-- Job Requirement (Admin only) -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Requirement" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                            ng-if="vm.role==='Admin'">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Requirement">Job Requirement</a>
+                        </li>
+
+                        <!-- Career -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Career" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Career">Career</a>
+                        </li>
+
+                        <!-- Candidates (Admin only) -->
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Candidates" &&
+                                                                 ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                            ng-if="vm.role==='Admin'">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Candidates">Candidates</a>
+                        </li>
+
+                    </ul>
+
+                    <!-- Right side menu -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
+
+                        <!-- Logged In -->
+                        <li class="nav-item d-flex align-items-center" ng-if="vm.username">
+                            <span class="navbar-text me-2">Welcome,</span>
+                            <label class="fw-bold text-primary me-3">{{vm.username}}</label>
+
+                            <button class="btn btn-danger btn-sm rounded-circle shadow-sm"
+                                    ng-click="vm.logout()"
+                                    title="Logout">
+                                <i class="fa fa-sign-out-alt"></i>
+                            </button>
+                        </li>
+
+                        <!-- Not Logged In -->
+                        <li class="nav-item" ng-if="!vm.username">
+                            <a href="/Home/Register" class="btn btn-primary btn-sm rounded-circle shadow-sm"
+                               title="Login">
+                                <i class="fa fa-sign-in-alt"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
             </div>
         </nav>
-    </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+	</header>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<!-- Bottom Scripts (NO duplicate jQuery!) -->
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

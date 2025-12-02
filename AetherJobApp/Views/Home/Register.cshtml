@@ -9,41 +9,49 @@
 <script src="~/angularjs/app/app.js"></script>
 <script src="~/angularjs/factory/registerfactory.js"></script>
 <script src="~/angularjs/controller/registercontroller.js"></script>
-<div ng-app="AetherJobApp" class="container" ng-controller="Register as vm" ng-init="vm.init()">
-	<div class="row col-md-12">
-		<h3>Aether Register</h3>
-		<hr />
-		<div class="form-group row">
-			<div class="col-md-2">Full Name</div>
-			<div class="col-md-4"><input type="text" maxlength="50" ng-model="vm.objRegister.fullName" class="form-Control" /></div>
-		</div>
-		<p></p>
-		<div class="form-group row">
-			<div class="col-md-2">Email</div>
-			<div class="col-md-4"><input type="email" maxlength="50" ng-model="vm.objRegister.email" class="form-Control" /></div>
-		</div>
-		<p></p>
-		<div class="form-group row">
-			<div class="col-md-2">Mobile No</div>
-			<div class="col-md-4"><input type="text" maxlength="15" ng-model="vm.objRegister.mobileNo" class="form-Control" /></div>
-		</div>
-		<p></p>
-		<div class="form-group row">
-			<div class="col-md-2">User Name</div>
-			<div class="col-md-4"><input type="text" maxlength="50" ng-model="vm.objRegister.username" class="form-Control" /></div>
-		</div>
-		<p></p>
-		<div class="form-group row">
-			<div class="col-md-2">Password</div>
-			<div class="col-md-4"><input type="password" maxlength="100" ng-model="vm.objRegister.password" class="form-Control" /></div>
-		</div>
-		<p></p>
-		<div class="form-group row">
-			<div class="col-md-2"></div>
-			<div class="col-md-4">
-				<button type="submit" ng-click="vm.register()" class="btn btn-success">Register</button>
-				<a asp-action="Login" asp-controller="Home" class="btn btn-link">Back</a>
-			</div>
-		</div>
-	</div>
+<div ng-app="AetherJobApp" class="container mt-5" ng-controller="Register as vm" ng-init="vm.init()">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded">
+                <div class="card-header bg-success text-white text-center">
+                    <h3 class="mb-0">📝 Aether Register</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Full Name</label>
+                        <input type="text" maxlength="50" ng-model="vm.objRegister.fullName"
+                               class="form-control" placeholder="Enter your full name" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Email</label>
+                        <input type="email" maxlength="50" ng-model="vm.objRegister.email"
+                               class="form-control" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Mobile No</label>
+                        <input type="text" maxlength="15" ng-model="vm.objRegister.mobileNo"
+                               class="form-control" placeholder="Enter your mobile number" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">User Name</label>
+                        <input type="text" maxlength="50" ng-model="vm.objRegister.username"
+                               class="form-control" placeholder="Choose a username" />
+                    </div>
+                    <div class="form-group mb-4">
+                        <label class="fw-bold">Password</label>
+                        <input type="password" maxlength="100" ng-model="vm.objRegister.password"
+                               class="form-control" placeholder="Enter a strong password" />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="submit" ng-click="vm.register()" class="btn btn-success btn-lg px-4">
+                            <i class="bi bi-person-check"></i> Register
+                        </button>
+                        <a asp-action="Login" asp-controller="Home" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left-circle"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

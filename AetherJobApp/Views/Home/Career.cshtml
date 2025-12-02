@@ -1,5 +1,27 @@
-﻿@* <script src="~/angularjs/factory/careerfactory.js"></script>
-<script src="~/angularjs/controller/careercontroller.js"></script> *@
+﻿<script src="~/angularjs/factory/careerfactory.js"></script>
+<script src="~/angularjs/controller/careercontroller.js"></script>
+
+<style>
+    .job-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .job-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #0062E6, #33AEFF);
+        color: #fff;
+        border: none;
+    }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #0052c7, #1a8cd8);
+            color: #fff;
+        }
+</style>
 <div class="container my-5" ng-controller="Career as vm">
     <h2 class="text-center mb-4 fw-bold">Career Opportunities</h2>
 
@@ -7,36 +29,37 @@
 
         <!-- Job Card -->
         <div class="col-md-4 mb-4" ng-repeat="job in vm.objCareerList">
-            <div class="card shadow-lg border-0 rounded-4 h-100">
+            <div class="card job-card shadow-lg border-0 rounded-4 h-100">
 
                 <!-- Header -->
-                <div class="card-header bg-gradient-dark text-white rounded-top-4"
-                     style="background: linear-gradient(90deg, #343a40, #495057);">
-                    <h5 class="mb-0 fw-semibold">{{ job.vacancyType }}</h5>
+                <div class="card-header text-white rounded-top-4 d-flex align-items-center"
+                     style="background: linear-gradient(135deg, #0062E6, #33AEFF);">
+                    <i class="bi bi-briefcase-fill me-2"></i>
+                    <h5 class="mb-0 fw-bold">{{ job.vacancyType }}</h5>
                 </div>
 
                 <!-- Body -->
                 <div class="card-body">
-
                     <!-- Status + Mode -->
-                    <p class="mb-2">
-                        <span class="badge px-3 py-2"
+                    <p class="mb-3">
+                        <span class="badge rounded-pill px-3 py-2 shadow-sm"
                               ng-class="{
-                                  'bg-success': job.status === 'Open',
-                                  'bg-danger': job.status === 'Closed'
-                              }">
-                            {{ job.status }}
+                              'bg-success': job.status === 'Open',
+                              'bg-danger': job.status === 'Closed'
+                          }">
+                            <i class="bi bi-circle-fill me-1"></i>{{ job.status }}
                         </span>
 
-                        <span class="badge bg-info text-dark px-3 py-2 ms-2">
-                            {{ job.jobMode }}
+                        <span class="badge rounded-pill bg-info text-dark px-3 py-2 ms-2 shadow-sm">
+                            <i class="bi bi-laptop me-1"></i>{{ job.jobMode }}
                         </span>
                     </p>
 
-                    <p><strong>Posted On:</strong> {{ job.postedOn | date:'yyyy-MM-dd' }}</p>
-                    <p><strong>Expires On:</strong> {{ job.expiredOn | date:'yyyy-MM-dd' }}</p>
+                    <p><i class="bi bi-calendar-event me-2 text-primary"></i><strong>Posted On:</strong> {{ job.postedOn | date:'yyyy-MM-dd' }}</p>
+                    <p><i class="bi bi-calendar-x me-2 text-danger"></i><strong>Expires On:</strong> {{ job.expiredOn | date:'yyyy-MM-dd' }}</p>
 
                     <p class="text-muted">
+                        <i class="bi bi-file-text me-2 text-secondary"></i>
                         <strong>Description:</strong><br>
                         {{ job.jobDescription }}
                     </p>
@@ -44,9 +67,9 @@
 
                 <!-- Footer -->
                 <div class="card-footer bg-white text-center border-0 pb-4">
-                    <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm fw-semibold"
-                            ng-click="vm.applyJob(job.id)">
-                        Apply Now
+                    <button class="btn btn-gradient px-4 py-2 rounded-pill shadow-sm fw-semibold"
+                            ng-click="vm.applyJob(job.id,job.vacancyType)">
+                        <i class="bi bi-send-fill me-2"></i> Apply Now
                     </button>
                 </div>
             </div>
@@ -54,11 +77,82 @@
 
         <!-- Empty Message -->
         <div class="col-12" ng-if="vm.objCareerList.length === 0">
-            <div class="alert alert-danger text-center">
+            <div class="alert alert-warning text-center shadow-sm rounded-pill">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
                 No Career Opportunities Found
             </div>
         </div>
 
     </div>
+
+    <div class="modal fade" id="careerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content rounded-3 shadow">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">{{vm.JobName}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <label>Primary Skill</label>
+                            <input type="text" class="form-control" maxlength="50" ng-model="vm.objCareer.primarySkill">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Experience</label>
+                            <div class="d-flex">
+                                <!-- Years -->
+                                <select class="form-select me-2" ng-model="vm.objCareer.experienceYear">
+                                    <option value="0">0</option>
+                                    <option ng-repeat="y in [].constructor(50) track by $index" value="{{$index+1}}">
+                                        {{$index+1}}
+                                    </option>
+                                </select>
+                                <span class="align-self-center">Years</span>
+
+                                <!-- Months -->
+                                <select class="form-select ms-2" ng-model="vm.objCareer.experienceMonth">
+                                    <option value="0">0</option>
+                                    <option ng-repeat="m in [].constructor(11) track by $index" value="{{$index+1}}">
+                                        {{$index+1}}
+                                    </option>
+                                </select>
+                                <span class="align-self-center">Months</span>
+                            </div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label>Upload Resume (PDF only)</label>
+                            <input type="file"
+                                   class="form-control"
+                                   accept="application/pdf"
+                                   onchange="angular.element(this).scope().vm.objCareer.resume = this.files[0]" />
+
+                            <small class="text-danger">Only .pdf files are allowed</small>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Refer By</label>
+                            <input type="text" class="form-control" maxlength="50" ng-model="vm.objCareer.referBy">
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" ng-click="vm.saveApplyJob()">Apply</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 

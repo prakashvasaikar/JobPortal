@@ -21,6 +21,7 @@
                     <th>Actions</th>
                     <th>JobRequirement Type</th>
                     <th>Status</th>
+                    <th>Job Mode</th>
                     <th>Posted On</th>
                     <th>Expired On</th>
                     <th>IsActive</th>
@@ -50,6 +51,7 @@
                             {{ e.status === 'Open' ? 'Open' : 'Closed' }}
                         </span>
                     </td>
+                    <td>{{e.jobMode}}</td>
                     <td>{{e.postedOn | date:'yyyy-MM-dd' }}</td>
                     <td>{{e.expiredOn | date:'yyyy-MM-dd' }}</td>
                     <td>
@@ -88,16 +90,6 @@
                                     ng-options="v.id as v.vacancyType for v in vm.objVacancyList">
                             </select>
                         </div>
-
-
-                        <div class="mb-3">
-                            <label>Status</label>
-                            <select class="form-select" ng-model="vm.objjobRequirement.status">
-                                <option value="Open">Open</option>
-                                <option value="Closed">Closed</option>
-                            </select>
-                        </div>
-
                         <div class="mb-3">
                             <label>Posted On</label>
                             <input type="date" class="form-control" ng-model="vm.objjobRequirement.postedOn">
@@ -124,12 +116,6 @@
                             <label>Job Description</label>
                             <textarea type="text" class="form-control" maxlength="1000" ng-model="vm.objjobRequirement.jobDescription"></textarea>
                         </div>
-
-                        <div class="mb-3">
-                            <label>Active</label>
-                            <input type="checkbox" ng-model="vm.objjobRequirement.isActive">
-                        </div>
-
                     </form>
                 </div>
 

@@ -17,11 +17,12 @@ namespace DataAccessLayer.Entities
         public int RefId_UserMaster { get; set; }
         public string PrimarySkill { get; set; }
         public string Status { get; set; }
-        public string Experience { get; set; }
-        public string Resume { get; set; }
+        public int ExperienceYear { get; set; }
+        public int ExperienceMonth { get; set; }
+        public string ResumePath { get; set; }
         public string ReferBy { get; set; }
         public int ReviewBy { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime ReviewDate { get; set; }
+        //public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime? ReviewDate { get; set; }
     }
 }

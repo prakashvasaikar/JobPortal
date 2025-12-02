@@ -1,0 +1,75 @@
+﻿
+<script src="~/angularjs/factory/candidatedetailfactory.js"></script>
+<script src="~/angularjs/controller/candidatecontroller.js"></script>
+<style>
+	table.dataTable {
+		width: 100% !important;
+	}
+
+	.dataTables_scrollBody {
+		overflow-x: auto !important;
+	}
+
+</style>
+<div class="container" ng-controller="Candidate as vm" ng-init="vm.loadUsers()">
+	<h3>Candidate List</h3>
+	<div class="row col-md-12">
+		<div class="table-responsive">
+			<table id="tblCandidate"
+				   class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-3 nowrap"
+				   style="width:100%;">
+				<thead class="table-dark">
+					<tr>
+						<th>Status</th>
+						<th>Resume</th>
+						<th>Full Name</th>
+						<th>MobileNo</th>
+						<th>Email</th>
+						<th>Vacancy Type</th>
+						<th>Primary</th>
+						<th>Exp. Year</th>
+						<th>Exp. Month</th>
+						<th>Job Mode</th>
+						<th>Refer By</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="e in vm.objCandidateList">
+						<td>
+							<span class="badge"
+								  ng-class="{
+											'bg-warning text-dark': e.status === 'Pending',
+											'bg-success': e.status === 'Shortlisted',
+											'bg-primary': e.status === 'Bookmark',
+											'bg-danger': e.status === 'Rejected'
+									  }">
+								{{ e.status }}
+							</span>
+						</td>
+						<td class="text-center align-middle">
+							<a ng-if="e.resumePath"
+							   ng-click="vm.downloadResume(e.resumePath)"
+							   style="cursor:pointer">
+								<i class="fas fa-file-pdf text-danger fa-lg"></i>
+							</a>
+
+							<span ng-if="!e.resumePath" class="text-muted">No File</span>
+						</td>
+						<td>{{e.fullName}}</td>
+						<td>{{e.mobileNo}}</td>
+						<td>{{e.email}}</td>
+						<td>{{e.vacancyType}}</td>
+						<td>{{e.primarySkill}}</td>
+						<td>{{e.experienceYear}}</td>
+						<td>{{e.experienceMonth}}</td>
+						<td>{{e.jobMode}}</td>
+						<td>{{e.referBy}}</td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</div>

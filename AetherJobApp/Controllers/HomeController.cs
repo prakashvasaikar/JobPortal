@@ -37,6 +37,10 @@ namespace AetherJobApp.Controllers
         {
             return View();
         }
+        public IActionResult Candidates()
+        {
+            return View();
+        }
         public IActionResult Requirement()
         {
             return View();

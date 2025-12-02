@@ -1,4 +1,1 @@
-﻿var app = angular.module("AetherJobApp", [
-    'ngAnimate',
-    'toastr'
-]);
+﻿var app = angular.module("AetherJobApp", []);

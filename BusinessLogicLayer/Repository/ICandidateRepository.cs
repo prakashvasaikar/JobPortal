@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.DbConnection;
 using DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace BusinessLogicLayer.Repository
         CandidateDetailModel getInfoById(int id);
         void saveCandidate(CandidateDetailModel model);
         void deleteCandidateById(int id);
+        CandidateDetailModel checkExistJobApply(int userid, int reuirementid);
+        Task<List<Sp_GetAllCandidateResponseModel>> GetAllCandidates();
     }
     public class CandidateRepository : ICandidateRepository
     {
@@ -22,10 +25,16 @@ namespace BusinessLogicLayer.Repository
         {
             _db = aetherDbContext;
         }
+
+        public CandidateDetailModel checkExistJobApply(int userid, int reuirementid)
+        {
+            return _db.candidateDetail.Where(x => x.RefId_UserMaster == userid && x.RefId_CompanyRequirement == reuirementid).FirstOrDefault();
+        }
+
         public void deleteCandidateById(int id)
         {
             var data = _db.candidateDetail.Where(x => x.Id == id).FirstOrDefault();
-            if(data!=null)
+            if (data != null)
             {
                 _db.candidateDetail.Remove(data);
                 _db.SaveChanges();
@@ -41,26 +50,25 @@ namespace BusinessLogicLayer.Repository
         {
             return _db.candidateDetail.ToList();
         }
-
+        public async Task<List<Sp_GetAllCandidateResponseModel>> GetAllCandidates()
+        {
+            var candidates = await _db.sp_GetAllCandidate
+                .FromSqlRaw("EXEC Sp_GetAllCandidate")
+                .ToListAsync();
+            return candidates;
+        }
         public void saveCandidate(CandidateDetailModel model)
         {
-            if(model.Id==0)
+            if (model.Id == 0)
             {
                 _db.Add(model);
             }
             else
             {
                 var data = _db.candidateDetail.Where(x => x.Id == model.Id).FirstOrDefault();
-                data.RefId_CompanyRequirement=model.RefId_CompanyRequirement;
-                data.RefId_UserMaster = model.RefId_UserMaster;
-                data.PrimarySkill = model.PrimarySkill;
-                data.Status=model.Status;
-                data.Resume = model.Resume;
-                data.ReferBy = model.ReferBy;
-                data.ReferBy=model.ReferBy;
-                data.ReviewDate = model.ReviewDate;
+
             }
             _db.SaveChanges();
         }
-    }   
+    }
 }

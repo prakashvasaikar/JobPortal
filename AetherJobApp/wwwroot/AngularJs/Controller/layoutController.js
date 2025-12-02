@@ -1,6 +1,6 @@
-﻿app.controller("Layout", function ($scope,toasts) {
+﻿app.controller("Layout", function ($scope) {
 
-    var vm = this;   // 🔥 correct place
+    var vm = this;
 
     vm.username = "";
     vm.role = "";
@@ -13,6 +13,10 @@
     vm.logout = function () {
         localStorage.clear();
         window.location.href = "/Home/Login";
+    };
+
+    vm.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
     };
 
 });
