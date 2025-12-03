@@ -38,9 +38,18 @@
 </head>
 
 <body>
+    <div ng-show="vm.isLoading"
+         style="
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.3); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size:50px; color:white;"></i>
+    </div>
 	<header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                @* <img src="~/images/logo.png" alt="Logo"/> *@
+
 
                 <!-- Brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AetherJobApp</a>
@@ -116,7 +125,7 @@
 
                         <!-- Not Logged In -->
                         <li class="nav-item" ng-if="!vm.username">
-                            <a href="/Home/Register" class="btn btn-primary btn-sm rounded-circle shadow-sm"
+                            <a href="/Home/Login" class="btn btn-primary btn-sm rounded-circle shadow-sm"
                                title="Login">
                                 <i class="fa fa-sign-in-alt"></i>
                             </a>

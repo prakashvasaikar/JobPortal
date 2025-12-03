@@ -14,6 +14,7 @@ namespace BusinessLogicLayer.Repository
         IEnumerable<CandidateDetailModel> getList();
         CandidateDetailModel getInfoById(int id);
         void saveCandidate(CandidateDetailModel model);
+        void updateStatusCandidate(int id, string status, int reviewby);
         void deleteCandidateById(int id);
         CandidateDetailModel checkExistJobApply(int userid, int reuirementid);
         Task<List<Sp_GetAllCandidateResponseModel>> GetAllCandidates();
@@ -59,16 +60,20 @@ namespace BusinessLogicLayer.Repository
         }
         public void saveCandidate(CandidateDetailModel model)
         {
-            if (model.Id == 0)
-            {
-                _db.Add(model);
-            }
-            else
-            {
-                var data = _db.candidateDetail.Where(x => x.Id == model.Id).FirstOrDefault();
-
-            }
+            _db.Add(model);
             _db.SaveChanges();
+        }
+
+        public void updateStatusCandidate(int id, string status, int reviewby)
+        {
+            var data = _db.candidateDetail.FirstOrDefault(x => x.Id == id);
+            if (data != null)
+            {
+                data.Status = status;
+                data.ReviewBy = reviewby;
+                data.ReviewDate = DateTime.Now;
+                _db.SaveChanges();
+            }
         }
     }
 }

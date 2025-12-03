@@ -4,33 +4,19 @@
     vm.objCareerList = [];
     vm.objCareer = {};
     vm.JobName = "";
-
-    //vm.init = function () {
-    //    vm.objCareer = {
-    //        id: 0,
-    //        refId_CompanyRequirement: 0,
-    //        refId_UserMaster: 0,
-    //        primarySkill: "",
-    //        status: "Pending",
-    //        experienceYear: 0,
-    //        experienceMonth: 0,
-    //        resume: "",
-    //        referBy: "",
-    //        reviewBy: "",
-    //        reviewDate: null
-    //    };
-    //};
-
+    var modal;
+    vm.isLoading = false;
     vm.loadJobRequirement = function () {
+        vm.isLoading = true;
         careerFactory.getJobRequirementList()
             .then(res => {
                 vm.objCareerList = res.data;
             })
-            .catch(err => console.error("jobRequirement list error", err));
+            .catch(err => console.error("jobRequirement list error", err))
+            .finally(() => vm.isLoading = false);
     };
 
     vm.applyJob = function (id, vacancyType) {
-        debugger
         var user = localStorage.getItem("User");
         var role = localStorage.getItem("Role");
         var userId = localStorage.getItem("UserId");
@@ -58,6 +44,8 @@
     };
 
     vm.saveApplyJob = function () {
+        debugger
+        vm.isLoading = true;
         const file = vm.objCareer.resume;
         const primarySkill = vm.objCareer.primarySkill;
         const years = vm.objCareer.experienceYear;
@@ -117,12 +105,11 @@
             return;
         }
 
-        // If validation passes, proceed with API call
         careerFactory.saveApplyJob(vm.objCareer)
             .then(res => {
-                debugger
                 if (res.data.success) {
                     alert("Apply Successfully !!!");
+                    bootstrap.Modal.getInstance(document.getElementById('careerModal')).hide();
                 } else if (!res.data.success) {
                     alert(res.data.message);
                 }
@@ -130,12 +117,13 @@
                     alert("Something went wrong: " + res.data.message);
                 }
             })
-            .catch(err => console.error("Internal server error", err));
+            .catch(err => console.error("Internal server error", err))
+            .finally(() => vm.isLoading = false);
+
     };
 
     setTimeout(() => {
         modal = new bootstrap.Modal(document.getElementById("careerModal"));
     }, 500);
-    // Call on page load
     vm.loadJobRequirement();
 });

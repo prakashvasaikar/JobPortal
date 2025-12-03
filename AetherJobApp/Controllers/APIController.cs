@@ -58,6 +58,10 @@ namespace AetherJobApp.Controllers
                 objModel.Password = userMasterModel.Password;
                 objModel.Email = userMasterModel.Email;
                 objModel.MobileNo = userMasterModel.MobileNo;
+                objModel.RefId_CountryMaster = userMasterModel.RefId_CountryMaster;
+                objModel.RefId_StateMaster = userMasterModel.RefId_StateMaster;
+                objModel.RefId_CityMaster = userMasterModel.RefId_CityMaster;
+
                 _userRepository.saveRegistration(objModel);
                 return Ok(new { success = true });
             }
@@ -81,9 +85,27 @@ namespace AetherJobApp.Controllers
         }
 
         [HttpGet("getUserList")]
-        public IActionResult GetUserList()
+        public async Task<IActionResult> GetUserList()
         {
-            var data = _userRepository.getAll();
+            var data = await _userRepository.getUserAll();
+            return Ok(data);
+        }
+        [HttpGet("getCountryList")]
+        public async Task<IActionResult> GetCountryList()
+        {
+            var data = await _userRepository.getCountryList();
+            return Ok(data);
+        }
+        [HttpGet("getStateListByCountryId/{id}")]
+        public async Task<IActionResult> GetStateListByCountryId(int id)
+        {
+            var data = await _userRepository.getStatelistByCountryId(id);
+            return Ok(data);
+        }
+        [HttpGet("getCityListByStateId/{id}")]
+        public async Task<IActionResult> GetCityListByStateId(int id)
+        {
+            var data = await _userRepository.getCityListByCityId(id);
             return Ok(data);
         }
         #region Vacancy Master
@@ -314,7 +336,19 @@ namespace AetherJobApp.Controllers
 
             return File(memory, "application/pdf", fileName);
         }
-
+        [HttpPost("updateStatusCandidate")]
+        public IActionResult UpdateStatusCandidate([FromBody] CandidateStatusRequestModel model)
+        {
+            try
+            {
+                _candidateRepository.updateStatusCandidate(model.Id, model.Status,model.ReviewBy);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(StatusCode(500, ex.Message));
+            }
+        }
         #endregion
 
     }

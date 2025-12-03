@@ -13,6 +13,9 @@ namespace DataAccessLayer.Entities
     {
         [Key]
         public int Id { get; set; }
+        public int RefId_CountryMaster { get; set; }
+        public int RefId_StateMaster { get; set; }
+        public int RefId_CityMaster { get; set; }
         public string Role { get; set; } ///as User Id
         public string FullName { get; set; }
         public string Username { get; set; }

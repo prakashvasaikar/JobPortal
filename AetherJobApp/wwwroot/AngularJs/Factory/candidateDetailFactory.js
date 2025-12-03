@@ -4,12 +4,10 @@
     return {
         getCandidateList: () => $http.get(baseUrl + "getCandidateList"),
         getCandidateInfoById: id => $http.get(baseUrl + "getCandidateInfoById" + id),
-        saveCandidate: objCandidateDetail => $http.post(baseUrl + "saveCandidate", objCandidateDetail),
+        updateStatus: objCandidate => $http.post(baseUrl + "updateStatusCandidate", objCandidate),
         deleteById: id => $http.delete(baseUrl + "deleteCandidate" + id),
         downloadResume: pdfName => $http.get(baseUrl + "download" + pdfName, { responseType: 'arraybuffer' }),
-        //downloadResume: pdfName => {
-        //    return $http.get(baseUrl + "download/" + pdfName, { responseType: 'arraybuffer' });
-        //}
+        
 
     };
 });

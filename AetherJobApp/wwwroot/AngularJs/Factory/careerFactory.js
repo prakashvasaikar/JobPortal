@@ -6,7 +6,6 @@
             $http.get(baseUrl + "getJobRequirementActiveList"),
 
         saveApplyJob: objCareer => {
-            debugger
             var formData = new FormData();
             formData.append("PrimarySkill", objCareer.primarySkill);
             formData.append("ExperienceYear", objCareer.experienceYear);

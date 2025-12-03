@@ -11,7 +11,15 @@
 	}
 
 </style>
+
 <div class="container" ng-controller="Candidate as vm" ng-init="vm.loadUsers()">
+	<div ng-show="vm.isLoading"
+		 style="
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.3); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;">
+		<i class="fa-solid fa-spinner fa-spin" style="font-size:50px; color:white;"></i>
+	</div>
 	<h3>Candidate List</h3>
 	<div class="row col-md-12">
 		<div class="table-responsive">
@@ -20,11 +28,15 @@
 				   style="width:100%;">
 				<thead class="table-dark">
 					<tr>
+						<td>Action</td>
 						<th>Status</th>
 						<th>Resume</th>
 						<th>Full Name</th>
 						<th>MobileNo</th>
 						<th>Email</th>
+						<th>Country</th>
+						<th>State</th>
+						<th>City</th>
 						<th>Vacancy Type</th>
 						<th>Primary</th>
 						<th>Exp. Year</th>
@@ -32,20 +44,30 @@
 						<th>Job Mode</th>
 						<th>Refer By</th>
 						
+						
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="e in vm.objCandidateList">
 						<td>
+							<span class="badge" style="cursor:pointer" ng-class="'bg-info'"
+								  ng-click="vm.updateStatus(e.candidateCode,e.status,e.fullName,e.vacancyType,e.primarySkill,e.experienceYear,e.experienceMonth,e.referBy)">
+								<i class="fa-solid fa-gear"></i>
+							</span>
+						</td>
+						<td>
 							<span class="badge"
 								  ng-class="{
 											'bg-warning text-dark': e.status === 'Pending',
 											'bg-success': e.status === 'Shortlisted',
-											'bg-primary': e.status === 'Bookmark',
+											'bg-primary': e.status === 'Bookmarked',
 											'bg-danger': e.status === 'Rejected'
 									  }">
 								{{ e.status }}
 							</span>
+							
+
+
 						</td>
 						<td class="text-center align-middle">
 							<a ng-if="e.resumePath"
@@ -59,6 +81,9 @@
 						<td>{{e.fullName}}</td>
 						<td>{{e.mobileNo}}</td>
 						<td>{{e.email}}</td>
+						<td>{{e.countryName}}</td>
+						<td>{{e.stateName}}</td>
+						<td>{{e.cityName}}</td>
 						<td>{{e.vacancyType}}</td>
 						<td>{{e.primarySkill}}</td>
 						<td>{{e.experienceYear}}</td>
@@ -71,5 +96,48 @@
 			</table>
 		</div>
 
+	</div>
+	<div class="modal fade" id="CandidateModal" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content rounded-3 shadow">
+
+				<div class="modal-header bg-dark text-white">
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<strong>Name</strong> :
+							<span class="badge bg-success" style="font-style: italic; font-size: 1.1rem;">
+								{{vm.fullName}}
+							</span>
+						</div>
+						<div class="mb-3">
+							<strong>Role</strong> : <span class="badge bg-success" style="font-style: italic; font-size: 1.1rem;">{{vm.vacancyType}}</span>
+						</div>
+						<div class="mb-3"><strong>Skills</strong>: <span class="badge bg-success" style="font-style: italic; font-size: 1.1rem;">{{vm.designation}}</span></div>
+						<div class="mb-3"><strong>Experience</strong> : <span class="badge bg-success" style="font-style: italic; font-size: 1.1rem;">{{vm.experience}}</span></div>
+						<div class="mb-3"><strong>Refer By</strong> : <span class="badge bg-success" style="font-style: italic; font-size: 1.1rem;">{{vm.referBy}}</span></div>
+						<div class="mb-3">
+							<strong>Status</strong>
+							<select class="form-control" ng-model="vm.objCandidate.status">
+								<option value="">-- Select Status --</option>
+								<option value="Pending">Pending</option>
+								<option value="Rejected">Rejected</option>
+								<option value="Shortlisted">Shortlisted</option>
+								<option value="Bookmarked">Bookmarked</option>
+							</select>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button class="btn btn-primary" ng-click="vm.saveUpdateStatus()">Update Status</button>
+				</div>
+
+			</div>
+		</div>
 	</div>
 </div>

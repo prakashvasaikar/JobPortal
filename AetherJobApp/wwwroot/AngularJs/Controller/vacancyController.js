@@ -26,7 +26,8 @@
                         $('#tblVacancy').DataTable({
                             pageLength: 10,
                             lengthMenu: [5, 10, 25, 50],
-                            ordering: true
+                            order: [[0, 'desc']],
+                            //ordering: true
                         });
                     }
                 }, 100);

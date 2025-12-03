@@ -16,6 +16,10 @@ namespace DataAccessLayer.DbConnection
         public DbSet<UserMasterModel> userMaster { get; set; }
         public DbSet<CompanyJobRequirementModel> companyJobRequirement { get; set; }
         public DbSet<CandidateDetailModel> candidateDetail { get; set; }
+        public DbSet<CityMasterModel> cityMaster { get; set; }
+        public DbSet<CountryMasterModel> countryMaster { get; set; }
+        public DbSet<StateMasterModel> stateMaster { get; set; }
         public DbSet<Sp_GetAllCandidateResponseModel> sp_GetAllCandidate { get; set; }
+        public DbSet<Sp_GetAllUsersResponseModel> sp_GetAllUsers { get; set; }
     }
 }

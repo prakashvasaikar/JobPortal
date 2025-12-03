@@ -8,5 +8,9 @@
         public string Password { get; set; }
         public string Email { get; set; }
         public string MobileNo { get; set; }
+        public int RefId_CountryMaster { get; set; }
+        public int RefId_StateMaster { get; set; }
+        public int RefId_CityMaster { get; set; }
+
     }
 }
