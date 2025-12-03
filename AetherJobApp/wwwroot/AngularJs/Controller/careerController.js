@@ -44,7 +44,6 @@
     };
 
     vm.saveApplyJob = function () {
-        debugger
         vm.isLoading = true;
         const file = vm.objCareer.resume;
         const primarySkill = vm.objCareer.primarySkill;

@@ -45,7 +45,6 @@
     vm.changeStatus = function (id, activeStatus) {
         userFactory.updateActive(id, activeStatus)
             .then(res => {
-                debugger
                 vm.loadUsers();
             })
             .catch(err => console.error("Update error", err));

@@ -5,7 +5,7 @@
     vm.objVacancyList = [];
     vm.isEdit = false;
     var modal;  
-    
+    vm.isLoading = false;
     vm.init = function () {
         vm.objVacancy = {
             id: 0,
@@ -16,7 +16,7 @@
     };
 
     vm.loadVacancy = function () {
-        debugger
+        vm.isLoading = true;
         vacancyFactory.getVacancyList()
             .then(res => {
                 vm.objVacancyList = res.data;
@@ -32,7 +32,8 @@
                     }
                 }, 100);
             })
-            .catch(err => console.error("Vacancy list error", err));
+            .catch(err => console.error("Vacancy list error", err))
+            .finally(() => vm.isLoading = false);
     };
 
     vm.deleteVacancy = function (id) {
@@ -62,7 +63,6 @@
     vm.openEditModal = function (id) {
         vacancyFactory.getVacancyInfoById(id)
             .then(res => {
-                debugger
                 vm.objVacancy = res.data;
                 vm.objVacancy.postedOn = vm.objVacancy.postedOn ? new Date(vm.objVacancy.postedOn) : null;
                 vm.objVacancy.expiredOn = vm.objVacancy.expiredOn ? new Date(vm.objVacancy.expiredOn) : null;
@@ -90,7 +90,6 @@
 
    
     vm.changeStatus = function (id, status) {
-        debugger
         vacancyFactory.updateActive(id, !status)
             .then(() => vm.loadVacancy())
             .catch(err => console.error("Status update error", err));

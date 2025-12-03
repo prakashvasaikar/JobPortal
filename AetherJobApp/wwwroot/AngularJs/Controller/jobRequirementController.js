@@ -94,9 +94,7 @@
     };
 
     vm.saveJobRequirement = function () {
-        debugger
         vm.objjobRequirement.createdBy = localStorage.getItem("UserId");
-
 
         if (vm.objjobRequirement.refId_VacancyMaster == null || vm.objjobRequirement.refId_VacancyMaster === 0) {
             alert("Vacancy Type is required.");
