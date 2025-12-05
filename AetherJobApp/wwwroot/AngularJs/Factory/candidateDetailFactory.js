@@ -8,6 +8,5 @@
         deleteById: id => $http.delete(baseUrl + "deleteCandidate" + id),
         downloadResume: pdfName => $http.get(baseUrl + "download" + pdfName, { responseType: 'arraybuffer' }),
         
-
     };
 });

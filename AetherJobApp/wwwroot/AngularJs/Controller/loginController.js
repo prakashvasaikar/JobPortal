@@ -3,7 +3,6 @@
     var vm = this;
     var objLogin = {};
     vm.init = function () {
-
         vm.objLogin = {
             username: "",
             password: ""
@@ -31,8 +30,5 @@
             });
 
     };
-
     vm.init();
-
-
 });
