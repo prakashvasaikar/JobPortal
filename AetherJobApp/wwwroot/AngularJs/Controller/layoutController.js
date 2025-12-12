@@ -12,7 +12,7 @@
 
     vm.logout = function () {
         localStorage.clear();
-        window.location.href = "/Home/Login";
+        window.location.href = "/Client/Login";
     };
 
     vm.isActive = function (viewLocation) {

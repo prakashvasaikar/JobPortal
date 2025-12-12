@@ -1,0 +1,169 @@
+﻿@{
+	Layout = null;
+}
+<!-- CSS -->
+<link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/assets/css/style.css"> <!-- your theme CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+<script src="~/angularjs/app/app.js"></script>
+<script src="~/angularjs/factory/registerfactory.js"></script>
+<script src="~/angularjs/controller/registercontroller.js"></script>
+
+<style>
+	body {
+		background: #f5f6fa;
+		font-family: 'Segoe UI', sans-serif;
+	}
+
+	.register-card {
+		max-width: 500px; /* medium size */
+		margin: 50px auto;
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+		padding: 30px;
+	}
+
+		.register-card h2 {
+			font-weight: 700;
+			font-size: 1.8rem;
+			margin-bottom: 5px;
+		}
+
+		.register-card p {
+			color: #6c757d;
+			margin-bottom: 20px;
+			font-size: 0.95rem;
+		}
+
+	.form-control-lg {
+		border-radius: 6px;
+		font-size: 0.95rem;
+		padding: 0.5rem 0.75rem;
+	}
+
+	.btn-primary {
+		background: #2d5bff;
+		border: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+	}
+
+		.btn-primary:hover {
+			background: #1f46e2;
+		}
+
+	.form-check-label {
+		user-select: none;
+		font-size: 0.9rem;
+	}
+</style>
+
+<div class="register-card" ng-app="AetherJobApp" ng-controller="Register as vm" ng-init="vm.init()">
+	<h2 class="text-center">Create Account</h2>
+	<p class="text-center">Join Aether Job Portal</p>
+
+	<!-- Full Name -->
+	<div class="form-group row mb-2">
+		<label class="col-sm-4 col-form-label fw-semibold">Full Name</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control form-control-lg" placeholder="Enter full name">
+		</div>
+	</div>
+
+	<!-- Email -->
+	<div class="form-group row mb-2">
+		<label class="col-sm-4 col-form-label fw-semibold">Email</label>
+		<div class="col-sm-8">
+			<input type="email" class="form-control form-control-lg" placeholder="Enter email">
+		</div>
+	</div>
+
+	<!-- Mobile -->
+	<div class="form-group row mb-2">
+		<label class="col-sm-4 col-form-label fw-semibold">Mobile Number</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control form-control-lg" placeholder="Enter mobile number">
+		</div>
+	</div>
+
+	<!-- Username -->
+	<div class="form-group row mb-2">
+		<label class="col-sm-4 col-form-label fw-semibold">Username</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control form-control-lg" placeholder="Choose username">
+		</div>
+	</div>
+
+	<!-- Password -->
+	<div class="form-group row mb-2">
+		<label class="col-sm-4 col-form-label fw-semibold">Password</label>
+		<div class="col-sm-8">
+			<input type="password" class="form-control form-control-lg" placeholder="Create password">
+		</div>
+	</div>
+
+	<!-- Show Password -->
+	<div class="form-check row mb-3">
+		<div class="col-sm-8 offset-sm-4">
+			<input class="form-check-input" type="checkbox" id="showPassword">
+			<label class="form-check-label" for="showPassword">Show password</label>
+		</div>
+	</div>
+	<!-- Country -->
+	<div class="form-group mb-3 row">
+		<label class="col-sm-4 col-form-label fw-semibold">Country</label>
+		<div class="col-md-8">
+			<select class="form-control form-control-lg"
+					ng-model="vm.objRegister.refId_CountryMaster"
+					ng-options="c.id as c.countryName for c in vm.objcountryList"
+					ng-change="vm.onCountryChange()">
+				<option value="">Select Country</option>
+			</select>
+		</div>
+	</div>
+	<!-- State -->
+
+	<div class="form-group mb-3 row">
+		<label class="col-sm-4 col-form-label fw-semibold">State</label>
+		<div class="col-md-8">
+			<select class="form-control form-control-lg"
+					ng-model="vm.objRegister.refId_StateMaster"
+					ng-options="s.id as s.stateName for s in vm.objStateList"
+					ng-change="vm.onStateChange()">
+				<option value="">Select State</option>
+			</select>
+		</div>
+	</div>
+	<!-- City -->
+	<div class="form-group mb-4 row">
+		<label class="col-sm-4 col-form-label fw-semibold">City</label>
+		<div class="col-md-8">
+			<select class="form-control form-control-lg"
+					ng-model="vm.objRegister.refId_CityMaster"
+					ng-options="city.id as city.cityName for city in vm.objCityList">
+				<option value="">Select City</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Buttons -->
+	<div class="row mb-3">
+		<div class="col-12">
+			<button type="submit" ng-click="vm.register()" class="btn btn-primary btn-lg w-100">Create Account</button>
+		</div>
+		
+	</div>
+
+	<div class="text-center mt-3">
+		<a href="/Client/Login" class="text-decoration-none text-primary fw-semibold">
+			Already have an account? Login
+		</a>
+	</div>
+
+</div>
+
+<!-- JS -->
+<script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="~/assets/js/bootstrap.min.js"></script>
+

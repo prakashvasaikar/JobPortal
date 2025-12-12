@@ -11,12 +11,12 @@ namespace BusinessLogicLayer.Repository
 {
     public interface ICompanyJobRequirementRepository
     {
-        Task<IEnumerable<object>> getList();
+        Task<IEnumerable<object>> getJobRequirementList();
         CompanyJobRequirementModel getInfoById(int id);
         void saveJobRequirement(CompanyJobRequirementModel model);
         void deleteById(int id);
         void updateIsActiveStatus(int id, bool isactive);
-        Task<IEnumerable<object>> getActiveList();
+        Task<IEnumerable<Sp_GetAllJobRequirementResponseModel>> getFindActiveList();
     }
     public class CompanyJobRequirementRepository : ICompanyJobRequirementRepository
     {
@@ -35,31 +35,12 @@ namespace BusinessLogicLayer.Repository
             }
         }
 
-        public async Task<IEnumerable<object>> getActiveList()
+        public async Task<IEnumerable<Sp_GetAllJobRequirementResponseModel>> getFindActiveList()
         {
-            var data = from job in _db.companyJobRequirement
-                       join vac in _db.vacancyMaster
-                           on job.RefId_VacancyMaster equals vac.Id into gj
-                       from subVac in gj.DefaultIfEmpty()
-                       where job.IsActive
-                       orderby job.Id descending
-                       select new
-                       {
-                           job.Id,
-                           job.RefId_VacancyMaster,
-                           VacancyType = subVac != null ? subVac.VacancyType : null,
-                           job.Status,
-                           job.PostedOn,
-                           job.ExpiredOn,
-                           job.JobMode,
-                           job.JobDescription,
-                           job.IsActive,
-                           job.CreatedBy,
-                           job.CreatedOn,
-                           job.UpdatedOn
-                       };
-
-            return await data.ToListAsync();
+            var data = await _db.sp_GetAllFindJob
+               .FromSqlRaw("EXEC Sp_GetAllJobRequirement")
+               .ToListAsync();
+            return data;
         }
 
         public CompanyJobRequirementModel getInfoById(int id)
@@ -67,7 +48,7 @@ namespace BusinessLogicLayer.Repository
             return _db.companyJobRequirement.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<object>> getList()
+        public async Task<IEnumerable<object>> getJobRequirementList()
         {
             var data = from job in _db.companyJobRequirement
                        join vac in _db.vacancyMaster

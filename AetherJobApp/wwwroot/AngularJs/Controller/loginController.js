@@ -16,10 +16,17 @@
         }
         userFactory.login(vm.objLogin)
             .then(res => {
+                debugger
                 localStorage.setItem("UserId", res.data.userId);
                 localStorage.setItem("User", res.data.login);
                 localStorage.setItem("Role", res.data.roles);
-                window.location.href = "/Home/Index";
+
+                if (localStorage.getItem("Role") == "User") {
+                    window.location.href = "/Client/Index";
+                }
+                else {
+                    window.location.href = "/Admin/Index";
+                }
             })
             .catch(err => {
                 if (err.data && err.data.message) {

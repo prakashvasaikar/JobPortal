@@ -1,0 +1,378 @@
+﻿@{
+	Layout = "~/views/shared/_clientlayout.cshtml";
+}
+
+<script src="~/angularjs/factory/careerfactory.js"></script>
+<script src="~/angularjs/controller/careercontroller.js"></script>
+
+<!-- Hero Area Start-->
+<div class="slider-area ">
+	<div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="/assets/img/hero/about.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="hero-cap text-center">
+						<h2>Get your job</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Hero Area End -->
+<!-- Job List Area Start -->
+<div class="job-listing-area pt-120 pb-120" ng-controller="Career as vm" ng-init="vm.init()">
+	<div class="container">
+		<div class="row">
+			<!-- Left content -->
+			<div class="col-xl-3 col-lg-3 col-md-4">
+				<div class="row">
+					<div class="col-12">
+						<div class="small-section-tittle2 mb-45">
+							<div class="ion">
+								<svg xmlns="http://www.w3.org/2000/svg"
+									 xmlns:xlink="http://www.w3.org/1999/xlink"
+									 width="20px" height="12px">
+									<path fill-rule="evenodd" fill="rgb(27, 207, 107)"
+										  d="M7.778,12.000 L12.222,12.000 L12.222,10.000 L7.778,10.000 L7.778,12.000 ZM-0.000,-0.000 L-0.000,2.000 L20.000,2.000 L20.000,-0.000 L-0.000,-0.000 ZM3.333,7.000 L16.667,7.000 L16.667,5.000 L3.333,5.000 L3.333,7.000 Z" />
+								</svg>
+							</div>
+							<h4>Filter Jobs</h4>
+						</div>
+					</div>
+				</div>
+				<!-- Job Category Listing start -->
+				<div class="job-category-listing mb-50">
+					<!-- single one -->
+					<div class="single-listing">
+						<div class="small-section-tittle2">
+							<h4>Job Category</h4>
+						</div>
+						<div class="select-job-items2">
+							<select class="form-control nice-select"
+									ng-model="vm.objCareer.refId_VacancyMaster"
+									ng-options="v.id as v.vacancyType for v in vm.objVacancyLists">
+								<option value="">All Category</option>
+							</select>
+							@* <select class="form-control"
+									ng-model="vm.objCareer.refId_VacancyMaster">
+								<option value="">All Category</option>
+
+								<option ng-repeat="v in vm.objVacancyList"
+										value="{{v.id}}">
+									{{v.vacancyType}}
+								</option>
+							</select> *@
+
+
+						</div>
+						<div class="select-Categories pt-80 pb-50">
+							<div class="small-section-tittle2">
+								<h4>Job Type</h4>
+							</div>
+							<label class="container">
+								Full Time
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Part Time
+								<input type="checkbox" checked="checked active">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Remote
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Freelance
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<!-- select-Categories End -->
+					</div>
+					<!-- single two -->
+					<div class="single-listing">
+						<div class="small-section-tittle2">
+							<h4>Job Location</h4>
+						</div>
+						<!-- Select job items start -->
+						<div class="select-job-items2">
+							<select name="select">
+								<option value="">Anywhere</option>
+								<option value="">Category 1</option>
+								<option value="">Category 2</option>
+								<option value="">Category 3</option>
+								<option value="">Category 4</option>
+							</select>
+						</div>
+						<!--  Select job items End-->
+						<!-- select-Categories start -->
+						<div class="select-Categories pt-80 pb-50">
+							<div class="small-section-tittle2">
+								<h4>Experience</h4>
+							</div>
+							<label class="container">
+								1-2 Years
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								2-3 Years
+								<input type="checkbox" checked="checked active">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								3-6 Years
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								6-more..
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<!-- select-Categories End -->
+					</div>
+					<!-- single three -->
+					<div class="single-listing">
+						<!-- select-Categories start -->
+						<div class="select-Categories pb-50">
+							<div class="small-section-tittle2">
+								<h4>Posted Within</h4>
+							</div>
+							<label class="container">
+								Any
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Today
+								<input type="checkbox" checked="checked active">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Last 2 days
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Last 3 days
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Last 5 days
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">
+								Last 10 days
+								<input type="checkbox">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<!-- select-Categories End -->
+					</div>
+					<div class="single-listing">
+						<!-- Range Slider Start -->
+						<aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
+							<div class="small-section-tittle2">
+								<h4>Filter Jobs</h4>
+							</div>
+							<div class="widgets_inner">
+								<div class="range_item">
+									<!-- <div id="slider-range"></div> -->
+									<input type="text" class="js-range-slider" value="" />
+									<div class="d-flex align-items-center">
+										<div class="price_text">
+											<p>Price :</p>
+										</div>
+										<div class="price_value d-flex justify-content-center">
+											<input type="text" class="js-input-from" id="amount" readonly />
+											<span>to</span>
+											<input type="text" class="js-input-to" id="amount" readonly />
+										</div>
+									</div>
+								</div>
+							</div>
+						</aside>
+						<!-- Range Slider End -->
+					</div>
+				</div>
+				<!-- Job Category Listing End -->
+			</div>
+			<!-- Right content -->
+			<div class="col-xl-9 col-lg-9 col-md-8">
+				<!-- Featured_job_start -->
+				<section class="featured-job-area">
+					<div class="container" ng-repeat="job in vm.objCareerList">
+						
+						<div class="job-card border rounded-4 p-4 mb-4 d-flex justify-content-between align-items-start shadow-sm">
+							<div class="d-flex">
+								<div class="job-icon-wrap me-3">
+									<img src="data:image/svg+xml;utf8,
+									<svg width='70' height='70' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+										<path d='M3 7H21V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V7Z' stroke='%230D6EFD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+										<path d='M16 7V5C16 3.9 15.1 3 14 3H10C8.9 3 8 3.9 8 5V7' stroke='%230D6EFD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+										<path d='M3 11H21' stroke='%230D6EFD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+									</svg>" />
+
+								</div>
+
+								<div>
+									<h3 class="fw-bold mb-1 text-primary">{{ job.vacancyType }}</h3>
+
+									<div class="d-flex gap-2 mb-2">
+										<span class="badge bg-light text-dark border">
+											<i class="fas fa-briefcase me-1"></i> {{ job.jobMode }}
+										</span>
+										<span class="badge bg-light text-dark border">
+											<i class="fas fa-map-marker-alt me-1"></i> {{job.countryName}}, {{job.cityName}}
+										</span>
+									</div>
+
+									<div class="text-muted small" style="font-style: italic;">
+										<i class="fas fa-clock text-success"></i>
+										Posted on
+										<span class="fw-semibold text-success">
+											{{ job.postedOn | date:'dd MMM yyyy' }}
+										</span>
+									</div>
+								</div>
+							</div>
+
+							<!-- RIGHT SIDE -->
+							<div class="text-end">
+								<button class="btn btn-primary rounded-pill px-4" style="background-color:#248bfb"
+										ng-click="vm.applyJob(job.id, job.vacancyType)">
+									Apply Now
+								</button>
+
+								<div class="mt-2 small fw-bold text-danger" style="font-style: italic;">
+								<i class="fas fa-calendar-times"></i>	
+								Expires: {{ job.expiredOn | date:'dd MMM yyyy' }}
+								</div>
+							</div>
+
+						</div>
+
+						<style>
+							.job-card {
+								border-left: 6px solid #0d6efd;
+								transition: .25s ease;
+								background: #ffffff;
+							}
+
+								.job-card:hover {
+									transform: translateY(-5px);
+									box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+								}
+
+							.job-icon-wrap img {
+								background: #f8f9ff;
+								padding: 10px;
+								border-radius: 12px;
+							}
+						</style>
+						
+
+
+				</section>
+				<!-- Featured_job_end -->
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="careerModal" tabindex="-1">
+		<div class="modal-dialog modal-lg" style="margin-top: 90px;">
+			<div class="modal-content rounded-3 shadow">
+
+				<div class="modal-header text-white" style="background-color:#fb246a">
+					<h5 class="modal-title" style="color:white">{{vm.JobName}}</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body">
+					<form>
+
+						<div class="mb-3">
+							<label>Primary Skill</label>
+							<input type="text" class="form-control" maxlength="500" ng-model="vm.objCareer.primarySkill">
+						</div>
+
+						<div class="mb-3">
+							<label>Experience</label>
+							<div class="d-flex">
+								<!-- Years -->
+								<select class="form-select me-2" ng-model="vm.objCareer.experienceYear">
+									<option value="0">0</option>
+									<option ng-repeat="y in [].constructor(50) track by $index" value="{{$index+1}}">
+										{{$index+1}}
+									</option>
+								</select>
+								<span class="align-self-center">Years</span>
+
+								<!-- Months -->
+								<select class="form-select ms-2" ng-model="vm.objCareer.experienceMonth">
+									<option value="0">0</option>
+									<option ng-repeat="m in [].constructor(11) track by $index" value="{{$index+1}}">
+										{{$index+1}}
+									</option>
+								</select>
+								<span class="align-self-center">Months</span>
+							</div>
+						</div>
+
+
+						<div class="mb-3">
+							<label>Upload Resume (PDF only)</label>
+							<input type="file"
+								   class="form-control"
+								   accept="application/pdf"
+								   onchange="angular.element(this).scope().vm.objCareer.resume = this.files[0]" />
+
+							<small class="text-danger">Only .pdf files are allowed</small>
+
+						</div>
+
+						<div class="mb-3">
+							<label>Refer By</label>
+							<input type="text" class="form-control" maxlength="50" ng-model="vm.objCareer.referBy">
+						</div>
+
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button class="btn btn-primary" ng-click="vm.saveApplyJob()">Apply</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Job List Area End -->
+<!--Pagination Start  -->
+<div class="pagination-area pb-115 text-center">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="single-wrap d-flex justify-content-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-start">
+							<li class="page-item active"><a class="page-link" href="#">01</a></li>
+							<li class="page-item"><a class="page-link" href="#">02</a></li>
+							<li class="page-item"><a class="page-link" href="#">03</a></li>
+							<li class="page-item"><a class="page-link" href="#"><span class="ti-angle-right"></span></a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--Pagination End  -->

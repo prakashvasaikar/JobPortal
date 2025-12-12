@@ -1,11 +1,58 @@
 ﻿
 <script src="~/angularjs/factory/usermasterfactory.js"></script>
 <script src="~/angularjs/controller/usermastercontroller.js"></script>
+<style>
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 52px;
+		height: 26px;
+		cursor: pointer;
+	}
+
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #dc3545; /* Inactive = Red */
+		transition: .4s;
+		border-radius: 34px;
+	}
+
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 20px;
+			width: 20px;
+			left: 3px;
+			bottom: 3px;
+			background-color: white;
+			border-radius: 50%;
+			transition: .4s;
+		}
+
+	input:checked + .slider {
+		background-color: #28a745; /* Active = Green */
+	}
+
+		input:checked + .slider:before {
+			transform: translateX(26px);
+		}
+</style>
+
 <div class="container" ng-controller="User as vm" ng-init="vm.loadUsers()">
 	
 	<h3>User List</h3>
 	<div class="row col-md-12">
-		@* <table class="table table-hover table-bordered align-middle shadow-sm rounded-3"> *@
 		<table id="tblUsers" class="table table-hover table-bordered align-middle shadow-sm rounded-3">
 			<thead class="table-dark">
 				<tr>
@@ -30,14 +77,24 @@
 					<td>{{e.countryName}}</td>
 					<td>{{e.stateName}}</td>
 					<td>{{e.cityName}}</td>
-					<td>
+					@* <td>
 						<span class="badge"
 							  ng-class="{'bg-success': e.isActive, 'bg-danger': !e.isActive}"
 							  style="cursor:pointer"
 							  ng-click="vm.changeStatus(e.id,e.isActive)">
 							{{ e.isActive ? 'Active' : 'Inactive' }}
 						</span>
+					</td> *@
+					<td class="d-flex align-items-center gap-2">
+						<label class="switch">
+							<input type="checkbox"
+								   ng-checked="e.isActive"
+								   ng-click="vm.changeStatus(e.id, e.isActive)">
+							<span class="slider"></span>
+						</label>
+						@* <span>{{ e.isActive ? 'Active' : 'Inactive' }}</span> *@
 					</td>
+
 
 				</tr>
 				<tr ng-if="vm.listUsers.length === 0">

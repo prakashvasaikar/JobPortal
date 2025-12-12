@@ -38,14 +38,15 @@
                     </td>
 
 					<td>{{e.vacancyType}}</td>
-					<td>
-						<span class="badge"
-							  ng-class="{'bg-success': e.isActive, 'bg-danger': !e.isActive}"
-							  style="cursor:pointer"
-							  ng-click="vm.changeStatus(e.id,e.isActive)">
-							{{ e.isActive ? 'Active' : 'Inactive' }}
-						</span>
-					</td>
+                    <td class="d-flex align-items-center gap-2">
+                        <label class="switch">
+                            <input type="checkbox"
+                                   ng-checked="e.isActive"
+                                   ng-click="vm.changeStatus(e.id, e.isActive)">
+                            <span class="slider"></span>
+                        </label>
+                        @* <span>{{ e.isActive ? 'Active' : 'Inactive' }}</span> *@
+                    </td>
 
 				</tr>
 				<tr ng-if="vm.objVacancyList.length === 0">

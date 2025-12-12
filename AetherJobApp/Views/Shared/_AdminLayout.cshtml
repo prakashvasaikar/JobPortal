@@ -134,6 +134,52 @@
             .btn-logout-icon:hover {
                 opacity: .85;
             }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #dc3545; /* Inactive = Red */
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                border-radius: 50%;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #28a745; /* Active = Green */
+        }
+
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
     </style>
 
 </head>
@@ -150,7 +196,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand" asp-controller="Admin" asp-action="Index">
                     <i class="fa-solid fa-briefcase"></i> Job Portal
                 </a>
 
@@ -166,63 +212,49 @@
                     <ul class="navbar-nav me-auto">
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "UserList" ? "active" : "")"
                             ng-if="vm.role==='Admin'">
-                            <a class="nav-link" asp-controller="Home" asp-action="UserList">Users</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="UserList">Users</a>
                         </li>
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Vacancy" ? "active" : "")"
                             ng-if="vm.role==='Admin'">
-                            <a class="nav-link" asp-controller="Home" asp-action="Vacancy">Vacancies</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Vacancy">Vacancies</a>
                         </li>
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Requirement" ? "active" : "")"
                             ng-if="vm.role==='Admin'">
-                            <a class="nav-link" asp-controller="Home" asp-action="Requirement">Job Requirement</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Requirement">Job Requirement</a>
                         </li>
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Career" ? "active" : "")">
-                            <a class="nav-link" asp-controller="Home" asp-action="Career">Career</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Career">Career</a>
                         </li>
 
                         <li class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Candidates" ? "active" : "")"
                             ng-if="vm.role==='Admin'">
-                            <a class="nav-link" asp-controller="Home" asp-action="Candidates">Candidates</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Candidates">Candidates</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-
-                        <!-- When logged in -->
                         <li class="nav-item d-flex align-items-center" ng-if="vm.username">
                             <span class="me-2">Welcome,</span>
                             <b class="text-primary me-3">{{vm.username}}</b>
 
-                            @* <button class="btn btn-danger btn-sm rounded-pill shadow-sm"
-                                    ng-click="vm.logout()">
-                                <i class="fa fa-sign-out-alt"></i>
-                            </button> *@
-
                             <button class="btn-logout-icon" ng-click="vm.logout()">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             </button>
-
                         </li>
-
-                      @*   <li class="nav-item" ng-if="!vm.username">
-                            <a class="btn btn-primary btn-sm rounded-pill" href="/Home/Login">
-                                <i class="fa fa-sign-in-alt"></i> Login
-                            </a>
-                        </li> *@
                         <li>
-                            <a href="/Home/Login" class="btn-auth btn-login me-2" ng-if="!vm.username">
+                            <a href="/Client/Login" class="btn-auth btn-login me-2" ng-if="!vm.username">
                                 <i class="fa-solid fa-right-to-bracket"></i> Login
                             </a>
 
-                            <a href="/Home/Register" class="btn-auth btn-signup" ng-if="!vm.username">
+                            <a href="/Client/Register" class="btn-auth btn-signup" ng-if="!vm.username">
                                 <i class="fa-solid fa-user-plus"></i> Sign Up
                             </a>
                         </li>
@@ -232,18 +264,6 @@
             </div>
         </nav>
     </header>
-
-    <!-- BEAUTIFUL HERO SECTION (Auto-hidden on Login page) -->
-   @*  @if (ViewContext.RouteData.Values["action"]?.ToString() != "Login")
-    {
-        <section class="hero-section text-center">
-            <div class="container">
-                <h1 class="hero-title">Find the Right Job for Your Future</h1>
-                <p class="hero-subtitle">Discover opportunities that match your skills and ambitions.</p>
-            </div>
-        </section>
-    }
- *@
     <!-- MAIN CONTENT -->
     <div class="container">
         <main class="pb-4">

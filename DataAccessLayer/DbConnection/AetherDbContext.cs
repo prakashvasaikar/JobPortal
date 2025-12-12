@@ -21,5 +21,6 @@ namespace DataAccessLayer.DbConnection
         public DbSet<StateMasterModel> stateMaster { get; set; }
         public DbSet<Sp_GetAllCandidateResponseModel> sp_GetAllCandidate { get; set; }
         public DbSet<Sp_GetAllUsersResponseModel> sp_GetAllUsers { get; set; }
+        public DbSet<Sp_GetAllJobRequirementResponseModel> sp_GetAllFindJob { get; set; }
     }
 }

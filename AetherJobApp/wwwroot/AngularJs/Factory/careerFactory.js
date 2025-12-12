@@ -4,6 +4,7 @@
     return {
         getJobRequirementList: () =>
             $http.get(baseUrl + "getJobRequirementActiveList"),
+        getActiveVacancyList: () => $http.get(baseUrl + "getActiveVacancyList"),
 
         saveApplyJob: objCareer => {
             var formData = new FormData();

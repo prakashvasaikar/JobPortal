@@ -184,13 +184,13 @@ namespace AetherJobApp.Controllers
         [HttpGet("getJobRequirementList")]
         public async Task<IActionResult> GetJobRequirementList()
         {
-            var data = await _jobRequirementRepository.getList();
+            var data = await _jobRequirementRepository.getJobRequirementList();
             return Ok(data);
         }
         [HttpGet("getJobRequirementActiveList")]
-        public async Task<IActionResult> GetJobRequirementActiveList()
+        public async Task<IActionResult> getFindActiveList()
         {
-            var data = await _jobRequirementRepository.getActiveList();
+            var data = await _jobRequirementRepository.getFindActiveList();
             return Ok(data);
         }
         [HttpGet("getJobRequirementInfoById/{id}")]
